@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -21,11 +23,11 @@ public class DriveTrain extends Subsystem {
   private double prevLeftDistance, prevRightDistance, prevTime, leftVelocity, rightVelocity, leftAcceleration, rightAcceleration,
    prevLeftVelocity, prevRightVelocity;
   
-  public DriveTrain(SpeedController rearLeft, SpeedController frontLeft, SpeedController rearRight, SpeedController frontRight){
-    this.rightGroup = new SpeedControllerGroup(rearRight, frontRight);
-    this.leftGroup = new SpeedControllerGroup(rearLeft, frontLeft);  
+  public DriveTrain(){
+    this.rightGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_RIGHT_MOTOR), new WPI_TalonSRX(RobotMap.CAN.FRONT_RIGHT_MOTOR));
+    this.leftGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_LEFT_MOTOR), new WPI_TalonSRX(RobotMap.CAN.FRONT_LEFT_MOTOR));  
     
-    this.driveTrain = new DifferentialDrive(leftGroup,rightGroup); 
+    this.driveTrain = new DifferentialDrive(this.leftGroup, this.rightGroup); 
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed){
@@ -40,19 +42,19 @@ public class DriveTrain extends Subsystem {
     return this.gyro.getAngle();
   }
 
-  public double getLeftEncoder(){
+  public double getLeftDistance(){
     return this.leftEncoder.getDistancePerPulse() / TICKS_DIVIDER;
   }
 
-  public double getRightEncoder(){
+  public double getRightDistance(){
     return this.rightEncoder.getDistancePerPulse() / TICKS_DIVIDER;
   }
 
-  public double getEncoders(){
-    return (getLeftEncoder() + getRightEncoder()) / 2;
+  public double getAverageDistance(){
+    return (getLeftDistance() + getRightDistance()) / 2;
   }
 
-  public double getRighttVelocity(){
+  public double getRightVelocity(){
     return this.rightVelocity;
   }
 
@@ -76,9 +78,9 @@ public class DriveTrain extends Subsystem {
 
   @Override
   public void periodic() {
-    double currentLeftDistance = getLeftEncoder();
+    double currentLeftDistance = getLeftDistance();
 
-    double currentRightDistance = getRightEncoder();
+    double currentRightDistance = getRightDistance();
     double currentTime = Timer.getFPGATimestamp();
 
     this.leftVelocity = (currentLeftDistance - prevLeftDistance) / (currentTime - prevTime);
