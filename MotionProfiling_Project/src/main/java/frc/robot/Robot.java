@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
 
     Robot.oi = new OI();
 
-    Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
+   /* Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
         new Waypoint(2, -3, 0) // Waypoint @ x=-2, y=-2, exit angle=0 radians
     };
 
@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
         0.02, 3, 2.0, 80.01);
     Trajectory trajectory = Pathfinder.generate(points, config);
     Pathfinder.writeToCSV(new File("/home/lvuser/test_path.csv"), trajectory);
-
+    */
   }
 
   @Override
