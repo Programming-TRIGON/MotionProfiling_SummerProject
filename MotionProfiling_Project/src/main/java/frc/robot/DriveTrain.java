@@ -16,6 +16,7 @@ public class DriveTrain extends Subsystem {
   DifferentialDrive driveTrain;
   ADXRS450_Gyro gyro;
   Encoder leftEncoder, rightEncoder;
+  double TICKS_DIVIDER = 500;
   
   public DriveTrain(SpeedController rearLeft, SpeedController frontLeft, SpeedController rearRight, SpeedController frontRight){
     this.rightGroup = new SpeedControllerGroup(rearRight, frontRight);
@@ -37,11 +38,12 @@ public class DriveTrain extends Subsystem {
   }
 
   public double getLeftEncoder(){
-    return this.leftEncoder.getDistancePerPulse();
+    return this.leftEncoder.getDistancePerPulse() / TICKS_DIVIDER;
   }
 
+
   public double getRightEncoder(){
-    return this.rightEncoder.getDistancePerPulse();
+    return this.rightEncoder.getDistancePerPulse() / TICKS_DIVIDER;
   }
 
   public double getEncoders(){
