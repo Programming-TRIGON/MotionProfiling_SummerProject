@@ -52,7 +52,7 @@ public class CalibrateKa extends Command {
   @Override
   protected void initialize() {
     //Gets the robot's starting point.
-    startingPoint = Robot.driveTrain.getEncoders();
+    startingPoint = Robot.driveTrain.getAverageDistance();
   }
 
   
@@ -73,7 +73,7 @@ public class CalibrateKa extends Command {
     //Checks if the robot stoped accelerating or reached it's max distance.
     double velocity = (Robot.driveTrain.getLeftVelocity() + Robot.driveTrain.getRightVelocity()) / 2;
     double acc = (Robot.driveTrain.getLeftAcceleration() + Robot.driveTrain.getRightAcceleration()) / 2;
-    return Robot.driveTrain.getEncoders() - startingPoint > MAX_DISTANCE
+    return Robot.driveTrain.getAverageDistance() - startingPoint > MAX_DISTANCE
         || (Math.abs(velocity) > EPSILON_VEL && Math.abs(acc) < EPSILON_ACC);
   }
 

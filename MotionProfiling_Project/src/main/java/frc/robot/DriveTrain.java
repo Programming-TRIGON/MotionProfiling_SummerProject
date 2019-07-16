@@ -84,18 +84,6 @@ public class DriveTrain extends Subsystem {
   public void calibrateGyro() {
     this.gyro.calibrate();
   }
-  public double getLeftAcceleration(){
-    return 0;
-  }
-  public double getRightAcceleration(){
-    return 0;
-  }
-  public double getRightVelocity(){
-    return 0;
-  }
-  public double getLeftVelocity(){
-    return 0;
-  }
 
   @Override
   public void initDefaultCommand() {

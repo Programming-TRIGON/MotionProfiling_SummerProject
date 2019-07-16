@@ -42,7 +42,7 @@ public class CalibrateKv extends Command {
   @Override
   protected void initialize() {
     //Gets the robot's starting point.
-    startingPoint = Robot.driveTrain.getEncoders();
+    startingPoint = Robot.driveTrain.getAverageDistance();
   }
 
   @Override
@@ -65,7 +65,7 @@ public class CalibrateKv extends Command {
   @Override
   protected boolean isFinished() {
     //Checks if the robot has moved enough.
-    return Math.abs(Robot.driveTrain.getEncoders() - startingPoint) > MAX_DISTANCE;
+    return Math.abs(Robot.driveTrain.getAverageDistance() - startingPoint) > MAX_DISTANCE;
   }
 
   @Override
