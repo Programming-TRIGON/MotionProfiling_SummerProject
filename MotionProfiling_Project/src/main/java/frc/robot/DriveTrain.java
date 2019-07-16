@@ -49,6 +49,18 @@ public class DriveTrain extends Subsystem {
   public double getEncoders(){
     return (getLeftEncoder() + getRightEncoder()) / 2;
   }
+  public double getLeftAcceleration(){
+    return 0;
+  }
+  public double getRightAcceleration(){
+    return 0;
+  }
+  public double getRightVelocity(){
+    return 0;
+  }
+  public double getLeftVelocity(){
+    return 0;
+  }
 
   @Override
   public void initDefaultCommand() {
