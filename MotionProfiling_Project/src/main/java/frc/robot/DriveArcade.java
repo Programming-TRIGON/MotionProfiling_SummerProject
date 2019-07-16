@@ -13,7 +13,7 @@ public class DriveArcade extends Command {
 
   @Override
   protected void execute() {
-    Robot.driveTrain.arcadeDrive(Robot.oi.driver.getX(), 0);
+    Robot.driveTrain.arcadeDrive(Robot.oi.driver.getX(), -Robot.oi.driver.getY());
   }
 
   @Override

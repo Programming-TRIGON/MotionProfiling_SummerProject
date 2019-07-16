@@ -19,7 +19,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   public static DashBoardController dbc;
-  public DriveTrain driveTrain;
+  public static DriveTrain driveTrain;
   public static OI oi;
 
   @Override
@@ -43,21 +43,21 @@ public class Robot extends TimedRobot {
 
     Robot.oi = new OI();
 
-    Waypoint[] points = new Waypoint[] {
-      new Waypoint(0, 0, 0),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
-      new Waypoint(2, -3, 0)                        // Waypoint @ x=-2, y=-2, exit angle=0 radians
-  };
-  
-  Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.02, 3, 2.0, 80.01);
-  Trajectory trajectory = Pathfinder.generate(points, config);
-  Pathfinder.writeToCSV(new File("/home/lvuser/test_path.csv"), trajectory);
+    Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
+        new Waypoint(2, -3, 0) // Waypoint @ x=-2, y=-2, exit angle=0 radians
+    };
+
+    Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH,
+        0.02, 3, 2.0, 80.01);
+    Trajectory trajectory = Pathfinder.generate(points, config);
+    Pathfinder.writeToCSV(new File("/home/lvuser/test_path.csv"), trajectory);
 
   }
 
   @Override
   public void robotPeriodic() {
     Robot.dbc.update();
- 
+
   }
 
   @Override
@@ -70,13 +70,13 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
+    case kCustomAuto:
+      // Put custom auto code here
+      break;
+    case kDefaultAuto:
+    default:
+      // Put default auto code here
+      break;
     }
   }
 
