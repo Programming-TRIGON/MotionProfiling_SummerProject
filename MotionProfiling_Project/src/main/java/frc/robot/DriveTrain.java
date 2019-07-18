@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.analog.adis16448.frc.ADIS16448_IMU;
+import com.analog.adis16448.frc.ADIS16448_IMU.Axis;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -16,7 +18,8 @@ public class DriveTrain extends Subsystem {
   
   private SpeedControllerGroup leftGroup, rightGroup; 
   private DifferentialDrive driveTrain;
-  private ADXRS450_Gyro gyro;
+  //private ADXRS450_Gyro gyro;
+  private ADIS16448_IMU gyro;
   private Encoder leftEncoder, rightEncoder;
   private double RIGHT_TICKS_DIVIDER = 575.0, LEFT_TICKS_DIVIDER = 771.5;
   private double prevLeftDistance = 0, prevRightDistance = 0, prevTime = 0, leftVelocity = 0, rightVelocity = 0, leftAcceleration = 0, rightAcceleration = 0,
@@ -27,7 +30,8 @@ public class DriveTrain extends Subsystem {
     this.rightGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_RIGHT_MOTOR), new WPI_TalonSRX(RobotMap.CAN.FRONT_RIGHT_MOTOR));
     this.leftGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_LEFT_MOTOR), new WPI_TalonSRX(RobotMap.CAN.FRONT_LEFT_MOTOR));  
     this.driveTrain = new DifferentialDrive(this.leftGroup, this.rightGroup);
-    this.gyro = new ADXRS450_Gyro();
+    //this.gyro = new ADXRS450_Gyro();
+    this.gyro = new ADIS16448_IMU();
     this.leftEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_B);
     this.rightEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_B);
   }
@@ -41,7 +45,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public double getAngle(){
-    return this.gyro.getAngle();
+    return this.gyro.getAngleZ();
   }
 
   public double getLeftDistance(){

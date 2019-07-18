@@ -54,7 +54,6 @@ public class Robot extends TimedRobot {
         0.02, 3, 2.0, 80.01);
     Trajectory trajectory = Pathfinder.generate(points, config);
     Pathfinder.writeToCSV(new File("/home/lvuser/test_path.csv"), trajectory);
-
   }
 
   @Override
