@@ -19,13 +19,13 @@ public class PathCreater {
     private TankModifier modifier;
     private double WHEEL_BASE_WIDTH = 0.6;
     private double TIMEFRAME = 0.02;
-    private double MAX_SPEED = 3;
-    private double MAX_ACC = 2;
+    private double MAX_VELOCITY = 3;
+    private double MAX_ACCELERATION = 2;
     private double MAX_JERK = 80;
 
     public PathCreater(){
-        this.config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH,
-        TIMEFRAME, MAX_SPEED, MAX_ACC, MAX_JERK);
+        this.config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC, Trajectory.Config.SAMPLES_HIGH,
+        TIMEFRAME, MAX_VELOCITY, MAX_ACCELERATION, MAX_JERK);
         this.paths.add(new Waypoint[]{
             new Waypoint(0, 0, 0),
             new Waypoint(2, -3, 0)
