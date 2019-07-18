@@ -7,11 +7,11 @@ import frc.robot.utils.Logger;
 
 public class CalibrateKv extends Command {
   // TODO: change const values.
-  private static final double EPSILON = 1e-5;
-  private static final double DELTA_VOLTAGE = 1e-5;
+  private static final double EPSILON = 9e-3;
+  private static final double DELTA_VOLTAGE = 0.1;
   private static final double MAX_DISTANCE = 2;
-  
-  private double lastVelocity = 0;
+
+  private double lastVelocity;
   private boolean isReversed;
   private Logger leftLogger;
   private Logger rightLogger;
@@ -37,6 +37,7 @@ public class CalibrateKv extends Command {
   @Override
   protected void initialize() {
     //Gets the robot's starting point.
+    lastVelocity = Robot.driveTrain.getLeftVelocity() + Robot.driveTrain.getRightVelocity();
     startingPoint = Robot.driveTrain.getAverageDistance();
   }
 
