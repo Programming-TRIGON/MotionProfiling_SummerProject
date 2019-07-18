@@ -5,40 +5,39 @@ import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.followers.EncoderFollower;
 
 /**
- * this command uses the paths we generated on the path creater and uses it to
+ * This command uses the paths we generated on the path creater and uses it to
  * perform the motion profiling
  */
 public class FollowPath extends Command {
 
-  int pathNumber;
-  EncoderFollower right, left;
-  double leftCalculate, rightCalculate, gyroHeading, desiredHeading, angleDifference, turn, angleDiff;
+  private int pathNumber;
+  private EncoderFollower right, left;
+  private double leftCalculate, rightCalculate, gyroHeading, desiredHeading, angleDifference, turn, angleDiff;
 
-  /** we get the correct path and creat the encoder follower objects */
+  /** This command gets the path number and then follows it */
   public FollowPath(int pathNumber) {
     requires(Robot.driveTrain);
     this.pathNumber = pathNumber;
 
-    this.left = new EncoderFollower(Robot.pathCreater.getTrajectories(this.pathNumber)[0]);
-    this.right = new EncoderFollower(Robot.pathCreater.getTrajectories(this.pathNumber)[1]);
+    this.left = new EncoderFollower(Robot.pathCreater.getSplitTrajectories(this.pathNumber)[0]);
+    this.right = new EncoderFollower(Robot.pathCreater.getSplitTrajectories(this.pathNumber)[1]);
   }
 
   @Override
-  /** we configure the encoder and the pidva to be ready of rmotion profiling */
+  /** We configure the encoder and the PIDVA */
   protected void initialize() {
-    this.left.configureEncoder(Robot.driveTrain.getLeftTicks(), RobotConstants.TICKS_PER_REV,
+    this.left.configureEncoder(Robot.driveTrain.getLeftTicks(), RobotConstants.TICKS_PER_REVOLUTION,
         RobotConstants.WHEEL_DIAMETER);
-    this.left.configurePIDVA(RobotConstants.MotionProfilingPIDSettings.KP, 0,
-        RobotConstants.MotionProfilingPIDSettings.KD, 1 / RobotConstants.MotionProfilingPIDSettings.KV,
-        RobotConstants.MotionProfilingPIDSettings.KA);
+    this.left.configurePIDVA(RobotConstants.MOTION_PROFILING_PID_SETTINGS.KP, 0,
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS.KD, 1 / RobotConstants.MOTION_PROFILING_PID_SETTINGS.KV,
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS.KA);
   }
 
   @Override
   /**
-   * we calculate the needed powere for the motion profiling, then we calculate
-   * the heading of the gyro to acount for the heading of the robot, the math is
-   * the KP. 
-   * the power we give to the motors is the calculation - / + the KP.
+   * We calculate the needed power , then we calculate the heading of the gyro to
+   * acount for the heading of the robot. The power we give to the motors is the
+   * calculation in the beginning - / + the KP.
    */
   protected void execute() {
     this.leftCalculate = this.left.calculate(Robot.driveTrain.getLeftTicks());
@@ -53,21 +52,23 @@ public class FollowPath extends Command {
       this.angleDiff = (angleDifference > 0) ? angleDifference - 360 : angleDiff + 360;
     }
 
-    this.turn = RobotConstants.kP_TURN * (-1.0 / 80.0) * this.angleDifference;
+    this.turn = RobotConstants.MOTION_PROFILING_KP_TURN * (-1.0 / 80.0) * this.angleDifference;
 
     Robot.driveTrain.tankDrive(this.leftCalculate + turn, this.rightCalculate - turn);
   }
 
   @Override
   protected boolean isFinished() {
-    return false;
+    return this.left.isFinished() && this.right.isFinished();
   }
 
   @Override
   protected void end() {
+    Robot.driveTrain.tankDrive(0, 0);
   }
 
   @Override
   protected void interrupted() {
+    end();
   }
 }

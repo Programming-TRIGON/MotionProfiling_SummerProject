@@ -1,22 +1,27 @@
-
 package frc.robot;
 
 /**
- * this class is used to store settings for different PIDs
+ * This class is used to store settings for different PIDs
  */
-public class SettingsForPID {
+public class PidSettings {
 
     double KP, KI, KD, KV, KA, tolerance, waitTime;
+
     /**
-    * @param KP the the Proportional coefficient of the PID loop in this command.
-    * @param KI the Integral coefficient of the PID loop in this command.
-    * @param KD the Differential coefficient of the PID loop in this command.
-    * @param KV the velocity at which to go.
-    * @param KA the acceleration of the robot
-    * @param tolerance  the error tolerance of this command.
-    * @param waitTime  the time this PID loop will wait while within tolerance of the setpoint before ending.
-    */
-    public SettingsForPID(double KP, double KI, double KD, double tolerance, double waitTime) {
+     * @param KP        The the Proportional coefficient of the PID loop in this
+     *                  command.
+     * @param KI        The Integral coefficient of the PID loop in this command.
+     * @param KD        The Differential coefficient of the PID loop in this
+     *                  command.
+     * @param KV        The voltage divided by speed, for finding the needed voltage
+     *                  for motion profiling.
+     * @param KA        Part of the equation needed for finding the need voltage of
+     *                  the robot.
+     * @param tolerance The error tolerance of this command.
+     * @param waitTime  The time this PID loop will wait while within tolerance of
+     *                  the setpoint before ending.
+     */
+    public PidSettings(double KP, double KI, double KD, double tolerance, double waitTime) {
         this.KP = KP;
         this.KI = KI;
         this.KD = KD;
@@ -25,7 +30,7 @@ public class SettingsForPID {
 
     }
 
-    public SettingsForPID(double KP, double KD, double KV, double KA) {
+    public PidSettings(double KP, double KD, double KV, double KA) {
         this.KP = KP;
         this.KD = KD;
         this.KV = KV;
@@ -75,10 +80,10 @@ public class SettingsForPID {
     public double getKA() {
         return KA;
     }
-    
+
     public void setKA(double KA) {
         this.KA = KA;
-    }    
+    }
 
     public double getWaitTime() {
         return waitTime;

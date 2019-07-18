@@ -46,27 +46,27 @@ public class DriveTrain extends Subsystem {
     return this.gyro.getAngle();
   }
 
-  /** gets the distance in meters the left motor has driven */
+  /** Gets the distance in meters the left motor has driven */
   public double getLeftDistance() {
-    return -this.leftEncoder.getDistance() / RobotConstants.LEFT_TICKS_DIVIDER;
+    return -this.leftEncoder.getDistance() / RobotConstants.TICKS_PER_METER_LEFT;
   }
 
-  /** gets the distance in meters the right motor has driven */
+  /** Gets the distance in meters the right motor has driven */
   public double getRightDistance() {
-    return this.rightEncoder.getDistance() / RobotConstants.RIGHT_TICKS_DIVIDER;
+    return this.rightEncoder.getDistance() / RobotConstants.TICKS_PER_METER_RIGHT;
   }
 
-  /** gets the distance in ticks the left motor has driven */
+  /** Gets the distance in ticks the left motor has driven */
   public int getLeftTicks() {
     return -this.leftEncoder.get();
   }
 
-  /** gets the distance in ticks the right motor has driven */
+  /** Gets the distance in ticks the right motor has driven */
   public int getRightTicks() {
     return this.rightEncoder.get();
   }
 
-  /** gets the average distance in meters the robot has driven */
+  /** Gets the average distance in meters the robot has driven */
   public double getAverageDistance() {
     return (getLeftDistance() + getRightDistance()) / 2;
   }
