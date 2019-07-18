@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
     this.driveTrain = new DriveTrain();
 
     Robot.dbc = new DashBoardController();
-
+    Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.4);
     dbc.addNumber("Left encoder", this.driveTrain::getLeftDistance);
     dbc.addNumber("Right encoder", this.driveTrain::getRightDistance);
     dbc.addNumber("Both encoders", this.driveTrain::getAverageDistance);
@@ -44,8 +44,8 @@ public class Robot extends TimedRobot {
     dbc.addNumber("Left velocity", this.driveTrain::getLeftVelocity);
     dbc.addNumber("Right acceleration", this.driveTrain::getRightAcceleration);
     dbc.addNumber("left acceleration", this.driveTrain::getLeftAcceleration);
-    SmartDashboard.putData("test kv", new CalibrateKv(false));
-   Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.4);
+    SmartDashboard.putData("test kv", new CalibrateKv(false,voltageSupplier));
+   
 
     Robot.oi = new OI();
 
