@@ -1,7 +1,9 @@
 package frc.robot;
 
 import java.io.File;
+import java.util.function.Supplier;
 
+import com.spikes2212.dashboard.ConstantHandler;
 import com.spikes2212.dashboard.DashBoardController;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -43,6 +45,7 @@ public class Robot extends TimedRobot {
     dbc.addNumber("Right acceleration", this.driveTrain::getRightAcceleration);
     dbc.addNumber("left acceleration", this.driveTrain::getLeftAcceleration);
     SmartDashboard.putData("test kv", new CalibrateKv(false));
+   Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.4);
 
     Robot.oi = new OI();
 

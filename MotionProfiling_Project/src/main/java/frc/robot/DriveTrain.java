@@ -21,7 +21,7 @@ public class DriveTrain extends Subsystem {
   //private ADXRS450_Gyro gyro;
   private ADIS16448_IMU gyro;
   private Encoder leftEncoder, rightEncoder;
-  private double RIGHT_TICKS_DIVIDER = 575.0, LEFT_TICKS_DIVIDER = 771.5;
+  private double RIGHT_TICKS_DIVIDER = 751.25, LEFT_TICKS_DIVIDER = 750.25; //575.0, LEFT_TICKS_DIVIDER = 771.5;
   private double prevLeftDistance = 0, prevRightDistance = 0, prevTime = 0, leftVelocity = 0, rightVelocity = 0, leftAcceleration = 0, rightAcceleration = 0,
    prevLeftVelocity = 0, prevRightVelocity = 0;
   

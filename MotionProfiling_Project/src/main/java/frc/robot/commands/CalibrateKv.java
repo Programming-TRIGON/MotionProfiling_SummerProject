@@ -1,30 +1,33 @@
 
 package frc.robot.commands;
 
+import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.utils.Logger;
 
 public class CalibrateKv extends Command {
   // TODO: change const values.
-  private static final double EPSILON = 9e-3;
-  private static final double DELTA_VOLTAGE = 0.1;
-  private static final double MAX_DISTANCE = 2;
+  private static final double EPSILON = 9e-2;
+  private static final double DELTA_VOLTAGE = 0.01;
+  private static final double MAX_DISTANCE = 2.5;
 
+  private Supplier<Double> voltageSupplier;
   private double lastVelocity;
   private boolean isReversed;
   private Logger leftLogger;
   private Logger rightLogger;
-  private double voltage;
+  private double voltage = 0.46;
   private double startingPoint;
 
   /**
    * 
    * @param isReversed should the command be run in reversed
    */
-  public CalibrateKv(boolean isReversed) {
+  public CalibrateKv(boolean isReversed,Supplier<Double> voltageSupplier) {
     requires(Robot.driveTrain);
     this.isReversed = isReversed;
+    this.voltageSupplier = voltageSupplier;
     //Creates loggers in order to save the results.
     leftLogger = new Logger(
         (isReversed ? "leftKvReversed" : "leftKv") + ".csv",
@@ -36,7 +39,9 @@ public class CalibrateKv extends Command {
 
   @Override
   protected void initialize() {
+    Robot.driveTrain.resetEncoders();
     //Gets the robot's starting point.
+    voltage = voltageSupplier.get();
     lastVelocity = Robot.driveTrain.getLeftVelocity() + Robot.driveTrain.getRightVelocity();
     startingPoint = Robot.driveTrain.getAverageDistance();
   }
@@ -68,8 +73,10 @@ public class CalibrateKv extends Command {
   protected void end() {
     Robot.driveTrain.tankDrive(0, 0);
     //Saves the data into files.
-    leftLogger.close();
+      leftLogger.close();
     rightLogger.close();
+  
+    
   }
 
   @Override

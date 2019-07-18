@@ -2,10 +2,14 @@
 package frc.robot.utils;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
+
+import edu.wpi.first.wpilibj.Filesystem;
 
 public class Logger {
     private String path;
@@ -15,7 +19,7 @@ public class Logger {
      * @param columns the columns name (ex. velocity, acceleration)
      */
     public Logger(String name, String... columns) {
-        this.path = "\\lvuser\\logs\\" + getTimeStamp() + '-' + name;
+        this.path =  Filesystem.getOperatingDirectory()+"/logs/"+ getTimeStamp() + '-' + name;
         data = new StringBuilder();
         log(columns);
     }
@@ -44,11 +48,14 @@ public class Logger {
      */
     public void close(){
         File file = new File(path);
-        file.getParentFile().mkdirs();
-
+        File parentFile = file.getParentFile();
+        
+        parentFile.mkdirs();
+    
         try {
-            PrintWriter writer = new PrintWriter(file, StandardCharsets.UTF_8);
-            writer.println(data.toString());
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file);
+            writer.write(data.toString());
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
