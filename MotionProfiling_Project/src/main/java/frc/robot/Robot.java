@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.CalibrateKv;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot {
     dbc.addNumber("Left velocity", this.driveTrain::getLeftVelocity);
     dbc.addNumber("Right acceleration", this.driveTrain::getRightAcceleration);
     dbc.addNumber("left acceleration", this.driveTrain::getLeftAcceleration);
+    SmartDashboard.putData("test kv", new CalibrateKv(false));
 
     Robot.oi = new OI();
 
