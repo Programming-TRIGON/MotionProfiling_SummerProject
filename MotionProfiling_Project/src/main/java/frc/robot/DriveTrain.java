@@ -52,6 +52,14 @@ public class DriveTrain extends Subsystem {
     return this.rightEncoder.getDistance() / RIGHT_TICKS_DIVIDER;
   }
 
+  public int getLeftTicks(){
+    return -this.leftEncoder.get();
+  }
+
+  public int getRightTicks(){
+    return this.rightEncoder.get();
+  }
+
   public double getAverageDistance(){
     return (getLeftDistance() + getRightDistance()) / 2;
   }

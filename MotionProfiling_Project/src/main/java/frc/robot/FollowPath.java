@@ -16,11 +16,15 @@ public class FollowPath extends Command {
 
   @Override
   protected void initialize() {
-    left.configureEncoder((int)Robot.driveTrain.getLeftDistance(), 50, 0.1524);
+    this.left.configureEncoder((int)Robot.driveTrain.getLeftDistance(), 50, 0.1524);
+    this.left.configurePIDVA(1.0, 0.0, 0.0, 1 / 80, 0);
   }
 
   @Override
   protected void execute() {
+    double l = left.calculate(Robot.driveTrain.getLeftDistance());
+    double r = right.calculate(Robot.driveTrain.getRightDistance());
+
   }
 
   @Override
