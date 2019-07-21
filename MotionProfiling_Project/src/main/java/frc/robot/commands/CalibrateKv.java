@@ -17,7 +17,7 @@ public class CalibrateKv extends Command {
   private boolean isReversed;
   private Logger leftLogger;
   private Logger rightLogger;
-  private double voltage = 0.46;
+  private double voltage = 0.45;
   private double startingPoint;
 
   /**

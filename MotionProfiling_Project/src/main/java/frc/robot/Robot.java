@@ -6,10 +6,12 @@ import java.util.function.Supplier;
 import com.spikes2212.dashboard.ConstantHandler;
 import com.spikes2212.dashboard.DashBoardController;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.CalibrateKa;
 import frc.robot.commands.CalibrateKv;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -18,7 +20,8 @@ import jaci.pathfinder.Waypoint;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
-  
+
+  private Notifier mNotifier;
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -35,7 +38,7 @@ public class Robot extends TimedRobot {
     this.driveTrain = new DriveTrain();
 
     Robot.dbc = new DashBoardController();
-    Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.4);
+    Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.45);
     dbc.addNumber("Left encoder", this.driveTrain::getLeftDistance);
     dbc.addNumber("Right encoder", this.driveTrain::getRightDistance);
     dbc.addNumber("Both encoders", this.driveTrain::getAverageDistance);
@@ -44,8 +47,10 @@ public class Robot extends TimedRobot {
     dbc.addNumber("Left velocity", this.driveTrain::getLeftVelocity);
     dbc.addNumber("Right acceleration", this.driveTrain::getRightAcceleration);
     dbc.addNumber("left acceleration", this.driveTrain::getLeftAcceleration);
-    SmartDashboard.putData("test kv", new CalibrateKv(false,voltageSupplier));
-   
+    SmartDashboard.putData("test kv", new CalibrateKv(false, voltageSupplier));
+    SmartDashboard.putData("test ka",
+        new CalibrateKa(RobotConstants.Calibration.leftForwardKv, RobotConstants.Calibration.rightForwardKv,
+            RobotConstants.Calibration.leftForwardVi, RobotConstants.Calibration.rightForwardVi, false));
 
     Robot.oi = new OI();
 
@@ -57,6 +62,9 @@ public class Robot extends TimedRobot {
         0.02, 3, 2.0, 80.01);
     Trajectory trajectory = Pathfinder.generate(points, config);
     Pathfinder.writeToCSV(new File("/home/lvuser/test_path.csv"), trajectory);
+
+    mNotifier  = new Notifier(Robot.driveTrain::periodics);
+    mNotifier.startPeriodic(0.1);
   }
 
   @Override
