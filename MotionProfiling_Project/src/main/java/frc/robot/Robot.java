@@ -6,7 +6,6 @@ import java.util.function.Supplier;
 import com.spikes2212.dashboard.ConstantHandler;
 import com.spikes2212.dashboard.DashBoardController;
 
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,7 +20,6 @@ public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
 
-  private Notifier mNotifier;
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -63,8 +61,7 @@ public class Robot extends TimedRobot {
     Trajectory trajectory = Pathfinder.generate(points, config);
     Pathfinder.writeToCSV(new File("/home/lvuser/test_path.csv"), trajectory);
 
-    mNotifier  = new Notifier(Robot.driveTrain::periodics);
-    mNotifier.startPeriodic(0.1);
+    
   }
 
   @Override
