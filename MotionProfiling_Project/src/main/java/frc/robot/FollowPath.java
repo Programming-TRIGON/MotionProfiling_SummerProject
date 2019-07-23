@@ -13,13 +13,14 @@ public class FollowPath extends Command {
 
   private EncoderFollower right, left;
   private double leftCalculate, rightCalculate, gyroHeading, desiredHeading, angleDifference, turn, angleDiff;
+  private SplitTrajectories splitTrajectories;
 
   /** This command gets the path number and then follows it */
   public FollowPath(Path path) {
     requires(Robot.drivetrain);
-
-    this.left = new EncoderFollower(Robot.pathCreater.getSplitTrajectories(path)[0]);
-    this.right = new EncoderFollower(Robot.pathCreater.getSplitTrajectories(path)[1]);
+    this.splitTrajectories = new SplitTrajectories(path); // splits the path to two sides of the robot.
+    this.left = new EncoderFollower(splitTrajectories.getLeftTrajectory());
+    this.right = new EncoderFollower(splitTrajectories.getRightTrajectory());
   }
 
   @Override
