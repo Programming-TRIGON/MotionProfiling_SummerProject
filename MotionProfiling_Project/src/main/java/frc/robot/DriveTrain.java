@@ -18,7 +18,6 @@ public class Drivetrain extends Subsystem {
   private DifferentialDrive driveTrain;
   private ADIS16448_IMU gyro;
   private Encoder leftEncoder, rightEncoder;
-  private double RIGHT_TICKS_DIVIDER = 575.0, LEFT_TICKS_DIVIDER = 771.5;
   private double prevTime = 0, leftAcceleration = 0, rightAcceleration = 0,
    prevLeftVelocity = 0, prevRightVelocity = 0;
   
@@ -32,8 +31,8 @@ public class Drivetrain extends Subsystem {
     this.leftEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_B);
     this.rightEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_B);
 
-    this.leftEncoder.setDistancePerPulse(LEFT_TICKS_DIVIDER);
-    this.rightEncoder.setDistancePerPulse(RIGHT_TICKS_DIVIDER);
+    this.leftEncoder.setDistancePerPulse(RobotConstants.TICKS_PER_METER_LEFT);
+    this.rightEncoder.setDistancePerPulse(RobotConstants.TICKS_PER_METER_RIGHT);
 
     this.leftEncoder.setReverseDirection(true);
     this.rightEncoder.setReverseDirection(false);

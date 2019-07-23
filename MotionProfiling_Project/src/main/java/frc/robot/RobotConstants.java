@@ -1,5 +1,11 @@
 package frc.robot;
 
+import java.io.File;
+import java.io.IOException;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Waypoint;
+
 /**
  * All the constants on the code are stored here.
  */
@@ -21,4 +27,28 @@ public class RobotConstants {
     public static final double TICKS_PER_METER_LEFT = 771.5;
     public static final int TICKS_PER_REVOLUTION = 50;
 
+    public enum Path {
+        SCALE(new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2, -3, 0) });
+
+        private final Trajectory trajectory;
+
+        private Path(Waypoint[] path) {
+            trajectory = Pathfinder.generate(path, Robot.pathCreater.config);
+        }
+
+        private Path(File csvFile) {
+            Trajectory trajectory = null;
+            try {
+                trajectory = Pathfinder.readFromCSV(csvFile);
+            } catch (IOException e) {
+                System.err.println("File not existing");
+            }
+            this.trajectory = trajectory;
+
+        }
+
+        public Trajectory getTrajectory() {
+            return trajectory;
+        }
+    }
 }
