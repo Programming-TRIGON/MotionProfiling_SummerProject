@@ -4,9 +4,6 @@ package frc.robot.utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 
 import edu.wpi.first.wpilibj.Filesystem;
@@ -67,5 +64,5 @@ public class Logger {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return timestamp.toString();
     }
-
+    
 }

@@ -16,16 +16,16 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  * This is the drive, chassis, subsystem.
  */
 public class Drivetrain extends Subsystem {
-  
-  private SpeedControllerGroup leftGroup, rightGroup; 
+
+  private SpeedControllerGroup leftGroup, rightGroup;
   private DifferentialDrive driveTrain;
   private ADIS16448_IMU gyro;
   private Encoder leftEncoder, rightEncoder;
-  private double RIGHT_TICKS_DIVIDER = 575.0, LEFT_TICKS_DIVIDER = 771.5;
-  private double prevTime = 0, leftAcceleration = 0, rightAcceleration = 0,
-   prevLeftVelocity = 0, prevRightVelocity = 0;
-  
-  public Drivetrain(){
+  private double RIGHT_TICKS_DIVIDER = /* 575.0 */717.45, LEFT_TICKS_DIVIDER = 738.55/* 771.5 */;
+
+  private double prevTime = 0, leftAcceleration = 0, rightAcceleration = 0, prevLeftVelocity = 0, prevRightVelocity = 0;
+
+  public Drivetrain() {
     super();
     this.rightGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_RIGHT_MOTOR),
         new WPI_TalonSRX(RobotMap.CAN.FRONT_RIGHT_MOTOR));
@@ -34,11 +34,13 @@ public class Drivetrain extends Subsystem {
     this.driveTrain = new DifferentialDrive(this.leftGroup, this.rightGroup);
     // this.gyro = new ADXRS450_Gyro();
     this.gyro = new ADIS16448_IMU();
-    this.leftEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_B);
-    this.rightEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_B);
+    this.leftEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_A,
+        RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_B);
+    this.rightEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_A,
+        RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_B);
 
-    this.leftEncoder.setDistancePerPulse(LEFT_TICKS_DIVIDER);
-    this.rightEncoder.setDistancePerPulse(RIGHT_TICKS_DIVIDER);
+    this.leftEncoder.setDistancePerPulse(1 / LEFT_TICKS_DIVIDER);
+    this.rightEncoder.setDistancePerPulse(1 / RIGHT_TICKS_DIVIDER);
 
     this.leftEncoder.setReverseDirection(true);
     this.rightEncoder.setReverseDirection(false);
@@ -57,12 +59,11 @@ public class Drivetrain extends Subsystem {
     return this.gyro.getAngleZ();
   }
 
-  public double getLeftDistance(){
+  public double getLeftDistance() {
     return this.leftEncoder.getDistance();
   }
 
-
-  public double getRightDistance(){
+  public double getRightDistance() {
     return this.rightEncoder.getDistance();
   }
 
@@ -70,11 +71,11 @@ public class Drivetrain extends Subsystem {
     return (getLeftDistance() + getRightDistance()) / 2;
   }
 
-  public double getRightVelocity(){
+  public double getRightVelocity() {
     return rightEncoder.getRate();
   }
 
-  public double getLeftVelocity(){
+  public double getLeftVelocity() {
     return leftEncoder.getRate();
   }
 
@@ -101,7 +102,7 @@ public class Drivetrain extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new DriveArcade());
+    setDefaultCommand(new DriveArcade(Robot.oi::getJoystickX, Robot.oi::getJoystickY));
   }
 
   @Override

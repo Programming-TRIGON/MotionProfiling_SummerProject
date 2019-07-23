@@ -37,7 +37,7 @@ public class CalibrateKa extends Command {
    * @param isReversed should the command be run in reversed
    */
   public CalibrateKa(double leftKv, double rightKv, double LeftVi, double rightVi, boolean isReversed) {
-    requires(Robot.driveTrain);
+    requires(Robot.drivetrain);
 
     this.isReversed = isReversed;
     this.leftKv = leftKv;
@@ -54,21 +54,21 @@ public class CalibrateKa extends Command {
   @Override
   protected void initialize() {
     // Gets the robot's starting point.
-    Robot.driveTrain.resetEncoders();
-    startingPoint = Robot.driveTrain.getAverageDistance();
+    Robot.drivetrain.resetEncoders();
+    startingPoint = Robot.drivetrain.getAverageDistance();
   }
 
   @Override
   protected void execute() {
     // Gives voltage to the engines.
-    Robot.driveTrain.arcadeDrive(0, isReversed ? -VOLTAGE : VOLTAGE);
+    Robot.drivetrain.arcadeDrive(0, isReversed ? -VOLTAGE : VOLTAGE);
     // Calculates (voltage - kv*velocity - vi) and logs the result.
-    double leftVoltageAcceleration = VOLTAGE - leftKv * Math.abs(Robot.driveTrain.getLeftVelocity()) - leftVi;
-    double rightVoltageAcceleration = VOLTAGE - rightKv * Math.abs(Robot.driveTrain.getRightVelocity()) - rightVi;
-    double accLeft = Robot.driveTrain.getLeftAcceleration();
+    double leftVoltageAcceleration = VOLTAGE - leftKv * Math.abs(Robot.drivetrain.getLeftVelocity()) - leftVi;
+    double rightVoltageAcceleration = VOLTAGE - rightKv * Math.abs(Robot.drivetrain.getRightVelocity()) - rightVi;
+    double accLeft = Robot.drivetrain.getLeftAcceleration();
    // if ((isReversed ? Math.signum(accLeft) > 0 : Math.signum(accLeft) < 0))
       leftLogger.log(leftVoltageAcceleration, accLeft);
-      double accRight = Robot.driveTrain.getRightAcceleration();
+      double accRight = Robot.drivetrain.getRightAcceleration();
     //if ((isReversed ? Math.signum(accRight) > 0 : Math.signum(accRight) < 0))
       rightLogger.log(rightVoltageAcceleration, accRight);
     
@@ -77,15 +77,15 @@ public class CalibrateKa extends Command {
   @Override
   protected boolean isFinished() {
     // Checks if the robot stoped accelerating or reached it's max distance.
-    double velocity = (Robot.driveTrain.getLeftVelocity() + Robot.driveTrain.getRightVelocity()) / 2;
-    double acc = (Robot.driveTrain.getLeftAcceleration() + Robot.driveTrain.getRightAcceleration()) / 2;
-    return Robot.driveTrain.getAverageDistance() - startingPoint > MAX_DISTANCE
+    double velocity = (Robot.drivetrain.getLeftVelocity() + Robot.drivetrain.getRightVelocity()) / 2;
+    double acc = (Robot.drivetrain.getLeftAcceleration() + Robot.drivetrain.getRightAcceleration()) / 2;
+    return Robot.drivetrain.getAverageDistance() - startingPoint > MAX_DISTANCE
         || (Math.abs(velocity) > EPSILON_VEL && /* (isReversed?-acc:acc) */ acc < EPSILON_ACC);
   }
 
   @Override
   protected void end() {
-    Robot.driveTrain.tankDrive(0, 0);
+    Robot.drivetrain.tankDrive(0, 0);
     // Saves the data into files.
     leftLogger.close();
     rightLogger.close();

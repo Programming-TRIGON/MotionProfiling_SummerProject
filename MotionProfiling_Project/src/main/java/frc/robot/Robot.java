@@ -7,6 +7,7 @@ import com.spikes2212.dashboard.ConstantHandler;
 import com.spikes2212.dashboard.DashBoardController;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,11 +46,13 @@ public class Robot extends TimedRobot {
     dbc.addNumber("Left velocity", Robot.drivetrain::getLeftVelocity);
     dbc.addNumber("Right acceleration", Robot.drivetrain::getRightAcceleration);
     dbc.addNumber("left acceleration", Robot.drivetrain::getLeftAcceleration);
+    InstantCommand reset = new InstantCommand(Robot.drivetrain::resetEncoders);
+    reset.setRunWhenDisabled(true);
+    SmartDashboard.putData("reset", reset);
     SmartDashboard.putData("test kv", new CalibrateKv(false, voltageSupplier));
     SmartDashboard.putData("test ka",
         new CalibrateKa(RobotConstants.Calibration.leftForwardKv, RobotConstants.Calibration.rightForwardKv,
             RobotConstants.Calibration.leftForwardVi, RobotConstants.Calibration.rightForwardVi, false));
-
     Robot.oi = new OI();
 
     Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
@@ -61,7 +64,6 @@ public class Robot extends TimedRobot {
     Trajectory trajectory = Pathfinder.generate(points, config);
     Pathfinder.writeToCSV(new File("/home/lvuser/test_path.csv"), trajectory);
 
-    
   }
 
   @Override
