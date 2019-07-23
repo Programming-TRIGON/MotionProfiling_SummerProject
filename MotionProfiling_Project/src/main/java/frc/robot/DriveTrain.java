@@ -34,6 +34,13 @@ public class DriveTrain extends Subsystem {
     this.gyro = new ADIS16448_IMU();
     this.leftEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_B);
     this.rightEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_B);
+
+    this.leftEncoder.setDistancePerPulse(LEFT_TICKS_DIVIDER);
+    this.rightEncoder.setDistancePerPulse(RIGHT_TICKS_DIVIDER);
+
+    this.leftEncoder.setReverseDirection(true);
+    this.rightEncoder.setReverseDirection(false);
+
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed){
@@ -49,15 +56,24 @@ public class DriveTrain extends Subsystem {
   }
 
   public double getLeftDistance(){
-    return -this.leftEncoder.getDistance() / LEFT_TICKS_DIVIDER;
+    return this.leftEncoder.getDistance();
   }
 
+
   public double getRightDistance(){
-    return this.rightEncoder.getDistance() / RIGHT_TICKS_DIVIDER;
+    return this.rightEncoder.getDistance();
   }
 
   public double getAverageDistance(){
     return (getLeftDistance() + getRightDistance()) / 2;
+  }
+
+  public double getLeftEncoderRate(){
+    return leftEncoder.getRate();
+  }
+
+  public double getRightEncoderRate(){
+    return rightEncoder.getRate();
   }
 
   public double getRightVelocity(){
