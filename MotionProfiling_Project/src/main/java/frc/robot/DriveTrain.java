@@ -4,7 +4,6 @@ import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.analog.adis16448.frc.ADIS16448_IMU.Axis;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
@@ -18,11 +17,10 @@ public class Drivetrain extends Subsystem {
   
   private SpeedControllerGroup leftGroup, rightGroup; 
   private DifferentialDrive driveTrain;
-  //private ADXRS450_Gyro gyro;
   private ADIS16448_IMU gyro;
   private Encoder leftEncoder, rightEncoder;
   private double RIGHT_TICKS_DIVIDER = 575.0, LEFT_TICKS_DIVIDER = 771.5;
-  private double prevLeftDistance = 0, prevRightDistance = 0, prevTime = 0, leftVelocity = 0, rightVelocity = 0, leftAcceleration = 0, rightAcceleration = 0,
+  private double prevTime = 0, leftAcceleration = 0, rightAcceleration = 0,
    prevLeftVelocity = 0, prevRightVelocity = 0;
   
   public Drivetrain(){
@@ -68,20 +66,12 @@ public class Drivetrain extends Subsystem {
     return (getLeftDistance() + getRightDistance()) / 2;
   }
 
-  public double getLeftEncoderRate(){
-    return leftEncoder.getRate();
-  }
-
-  public double getRightEncoderRate(){
+  public double getRightVelocity(){
     return rightEncoder.getRate();
   }
 
-  public double getRightVelocity(){
-    return this.rightVelocity;
-  }
-
   public double getLeftVelocity(){
-    return this.leftVelocity;
+    return leftEncoder.getRate();
   }
 
   public double getRightAcceleration() {
@@ -112,24 +102,14 @@ public class Drivetrain extends Subsystem {
 
   @Override
   public void periodic() {
-    double currentLeftDistance = getLeftDistance();
-
-    double currentRightDistance = getRightDistance();
     double currentTime = Timer.getFPGATimestamp();
 
-    this.leftVelocity = (currentLeftDistance - prevLeftDistance) / (currentTime - prevTime);
-    this.leftAcceleration = (leftVelocity - prevLeftVelocity) / (currentTime - prevTime);
+    this.leftAcceleration = (getLeftVelocity() - prevLeftVelocity) / (currentTime - prevTime);
+    this.rightAcceleration = (getRightVelocity() - prevRightVelocity) / (currentTime - prevTime);
 
-    this.rightVelocity = (currentRightDistance - prevRightDistance) / (currentTime - prevTime);
-    this.rightAcceleration = (rightVelocity - prevRightVelocity) / (currentTime - prevTime);
-
-    this.prevLeftDistance = currentLeftDistance;
-    this.prevLeftVelocity = leftVelocity;
-
-    this.prevRightDistance = currentRightDistance;
-    this.prevRightVelocity = rightVelocity;
+    this.prevLeftVelocity = getLeftVelocity();
+    this.prevRightVelocity = getRightVelocity();
 
     this.prevTime = currentTime;
-
   }
 }

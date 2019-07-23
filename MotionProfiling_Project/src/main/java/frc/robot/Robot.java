@@ -28,20 +28,18 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    this.drivetrain = new Drivetrain();
+    Robot.drivetrain = new Drivetrain();
 
     Robot.dbc = new DashBoardController();
 
-    dbc.addNumber("Left encoder", this.drivetrain::getLeftDistance);
-    dbc.addNumber("Right encoder", this.drivetrain::getRightDistance);
-    dbc.addNumber("Both encoders", this.drivetrain::getAverageDistance);
-    dbc.addNumber("Gyro angle", this.drivetrain::getAngle);
-    dbc.addNumber("Right velocity", this.drivetrain::getRightVelocity);
-    dbc.addNumber("Left velocity", this.drivetrain::getLeftVelocity);
-    dbc.addNumber("Right acceleration", this.drivetrain::getRightAcceleration);
-    dbc.addNumber("left acceleration", this.drivetrain::getLeftAcceleration);
-    dbc.addNumber("left encoder rate", this.drivetrain::getLeftEncoderRate);
-    dbc.addNumber("right encoder rate", this.drivetrain::getRightEncoderRate);
+    dbc.addNumber("Left encoder", Robot.drivetrain::getLeftDistance);
+    dbc.addNumber("Right encoder", Robot.drivetrain::getRightDistance);
+    dbc.addNumber("Both encoders", Robot.drivetrain::getAverageDistance);
+    dbc.addNumber("Gyro angle", Robot.drivetrain::getAngle);
+    dbc.addNumber("Right velocity", Robot.drivetrain::getRightVelocity);
+    dbc.addNumber("Left velocity", Robot.drivetrain::getLeftVelocity);
+    dbc.addNumber("Right acceleration", Robot.drivetrain::getRightAcceleration);
+    dbc.addNumber("left acceleration", Robot.drivetrain::getLeftAcceleration);
 
     Robot.oi = new OI();
 
