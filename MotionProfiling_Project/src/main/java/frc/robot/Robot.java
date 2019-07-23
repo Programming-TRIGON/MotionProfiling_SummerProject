@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   public static DashBoardController dbc;
-  public static Drivetrain drivetrain;
+  public static DriveTrain driveTrain;
   public static OI oi;
 
   @Override
@@ -34,19 +34,19 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    Robot.drivetrain = new Drivetrain();
+    Robot.driveTrain = new DriveTrain();
 
     Robot.dbc = new DashBoardController();
     Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.45);
-    dbc.addNumber("Left encoder", Robot.drivetrain::getLeftDistance);
-    dbc.addNumber("Right encoder", Robot.drivetrain::getRightDistance);
-    dbc.addNumber("Both encoders", Robot.drivetrain::getAverageDistance);
-    dbc.addNumber("Gyro angle", Robot.drivetrain::getAngle);
-    dbc.addNumber("Right velocity", Robot.drivetrain::getRightVelocity);
-    dbc.addNumber("Left velocity", Robot.drivetrain::getLeftVelocity);
-    dbc.addNumber("Right acceleration", Robot.drivetrain::getRightAcceleration);
-    dbc.addNumber("left acceleration", Robot.drivetrain::getLeftAcceleration);
-    InstantCommand reset = new InstantCommand(Robot.drivetrain::resetEncoders);
+    dbc.addNumber("Left encoder", Robot.driveTrain::getLeftDistance);
+    dbc.addNumber("Right encoder", Robot.driveTrain::getRightDistance);
+    dbc.addNumber("Both encoders", Robot.driveTrain::getAverageDistance);
+    dbc.addNumber("Gyro angle", Robot.driveTrain::getAngle);
+    dbc.addNumber("Right velocity", Robot.driveTrain::getRightVelocity);
+    dbc.addNumber("Left velocity", Robot.driveTrain::getLeftVelocity);
+    dbc.addNumber("Right acceleration", Robot.driveTrain::getRightAcceleration);
+    dbc.addNumber("left acceleration", Robot.driveTrain::getLeftAcceleration);
+    InstantCommand reset = new InstantCommand(Robot.driveTrain::resetEncoders);
     reset.setRunWhenDisabled(true);
     SmartDashboard.putData("reset", reset);
     SmartDashboard.putData("test kv", new CalibrateKv(false, voltageSupplier));

@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 /**
  * This is the drive, chassis, subsystem.
  */
-public class Drivetrain extends Subsystem {
+public class DriveTrain extends Subsystem {
 
   private SpeedControllerGroup leftGroup, rightGroup;
   private DifferentialDrive driveTrain;
@@ -25,7 +25,7 @@ public class Drivetrain extends Subsystem {
 
   private double prevTime = 0, leftAcceleration = 0, rightAcceleration = 0, prevLeftVelocity = 0, prevRightVelocity = 0;
 
-  public Drivetrain() {
+  public DriveTrain() {
     super();
     this.rightGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_RIGHT_MOTOR),
         new WPI_TalonSRX(RobotMap.CAN.FRONT_RIGHT_MOTOR));

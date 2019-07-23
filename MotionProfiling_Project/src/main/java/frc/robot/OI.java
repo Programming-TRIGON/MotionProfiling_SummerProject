@@ -13,7 +13,7 @@ public class OI {
 
     public OI() {
         this.resetEncodersButton = new JoystickButton(driver, 1);
-        this.resetEncodersButton.whenPressed(new InstantCommand(() -> Robot.drivetrain.resetEncoders()));
+        this.resetEncodersButton.whenPressed(new InstantCommand(() -> Robot.driveTrain.resetEncoders()));
         driveTest = new JoystickButton(driver, 2);
         driveTest.whileHeld(new DriveArcade(() -> 0.0, () -> 0.5));
         CameraServer.getInstance().startAutomaticCapture(0);
