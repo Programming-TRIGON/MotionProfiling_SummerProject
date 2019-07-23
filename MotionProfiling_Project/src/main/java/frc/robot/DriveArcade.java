@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveArcade extends Command {
   public DriveArcade() {
-    requires(Robot.driveTrain);
+    requires(Robot.drivetrain);
   }
 
   @Override
@@ -13,7 +13,7 @@ public class DriveArcade extends Command {
 
   @Override
   protected void execute() {
-    Robot.driveTrain.arcadeDrive(Robot.oi.driver.getX(), -Robot.oi.driver.getY());
+    Robot.drivetrain.arcadeDrive(Robot.oi.getJoystickX(), Robot.oi.getJoystickY());
   }
 
   @Override
@@ -23,7 +23,7 @@ public class DriveArcade extends Command {
 
   @Override
   protected void end() {
-    Robot.driveTrain.arcadeDrive(0, 0);
+    Robot.drivetrain.arcadeDrive(0, 0);
   }
 
   @Override

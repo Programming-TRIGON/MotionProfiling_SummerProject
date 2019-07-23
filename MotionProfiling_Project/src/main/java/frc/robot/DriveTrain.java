@@ -6,7 +6,6 @@ import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.analog.adis16448.frc.ADIS16448_IMU.Axis;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
@@ -16,19 +15,17 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 /**
  * This is the drive, chassis, subsystem.
  */
-public class DriveTrain extends Subsystem {
-
-  private SpeedControllerGroup leftGroup, rightGroup;
+public class Drivetrain extends Subsystem {
+  
+  private SpeedControllerGroup leftGroup, rightGroup; 
   private DifferentialDrive driveTrain;
-  // private ADXRS450_Gyro gyro;
   private ADIS16448_IMU gyro;
   private Encoder leftEncoder, rightEncoder;
-  private final double RIGHT_TICKS_DIVIDER = 751.25, LEFT_TICKS_DIVIDER = 750.25; // 575.0, LEFT_TICKS_DIVIDER = 771.5;
-  private double prevLeftDistance = 0, prevRightDistance = 0, prevTime = 0, leftVelocity = 0, rightVelocity = 0,
-      leftAcceleration = 0, rightAcceleration = 0, prevLeftVelocity = 0, prevRightVelocity = 0;
-  private final double LEFT_ENCODER_DPP = 0;
-  private final double RIGHT_ENCODER_DPP = 0;
-  public DriveTrain() {
+  private double RIGHT_TICKS_DIVIDER = 575.0, LEFT_TICKS_DIVIDER = 771.5;
+  private double prevTime = 0, leftAcceleration = 0, rightAcceleration = 0,
+   prevLeftVelocity = 0, prevRightVelocity = 0;
+  
+  public Drivetrain(){
     super();
     this.rightGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_RIGHT_MOTOR),
         new WPI_TalonSRX(RobotMap.CAN.FRONT_RIGHT_MOTOR));
@@ -37,12 +34,15 @@ public class DriveTrain extends Subsystem {
     this.driveTrain = new DifferentialDrive(this.leftGroup, this.rightGroup);
     // this.gyro = new ADXRS450_Gyro();
     this.gyro = new ADIS16448_IMU();
-    this.leftEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_A,
-        RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_B);
-    this.rightEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_A,
-        RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_B);
-    this.leftEncoder.setDistancePerPulse(LEFT_ENCODER_DPP);
-    this.rightEncoder.setDistancePerPulse(RIGHT_ENCODER_DPP);
+    this.leftEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_B);
+    this.rightEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_B);
+
+    this.leftEncoder.setDistancePerPulse(LEFT_TICKS_DIVIDER);
+    this.rightEncoder.setDistancePerPulse(RIGHT_TICKS_DIVIDER);
+
+    this.leftEncoder.setReverseDirection(true);
+    this.rightEncoder.setReverseDirection(false);
+
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -57,24 +57,25 @@ public class DriveTrain extends Subsystem {
     return this.gyro.getAngleZ();
   }
 
-  public double getLeftDistance() {
-    return -this.leftEncoder.getDistance() / LEFT_TICKS_DIVIDER;
+  public double getLeftDistance(){
+    return this.leftEncoder.getDistance();
   }
 
-  public double getRightDistance() {
-    return this.rightEncoder.getDistance() / RIGHT_TICKS_DIVIDER;
+
+  public double getRightDistance(){
+    return this.rightEncoder.getDistance();
   }
 
   public double getAverageDistance() {
     return (getLeftDistance() + getRightDistance()) / 2;
   }
 
-  public double getRightVelocity() {
-    return this.rightEncoder.getRate();
+  public double getRightVelocity(){
+    return rightEncoder.getRate();
   }
 
-  public double getLeftVelocity() {
-    return this.leftEncoder.getRate();
+  public double getLeftVelocity(){
+    return leftEncoder.getRate();
   }
 
   public double getRightAcceleration() {
@@ -105,24 +106,14 @@ public class DriveTrain extends Subsystem {
 
   @Override
   public void periodic() {
-    // double currentLeftDistance = getLeftDistance();
-
-    // double currentRightDistance = getRightDistance();
     double currentTime = Timer.getFPGATimestamp();
 
-    //this.leftVelocity = (currentLeftDistance - prevLeftDistance) / (currentTime - prevTime);
-    this.leftAcceleration = (this.getLeftVelocity() - prevLeftVelocity) / (currentTime - prevTime); 
+    this.leftAcceleration = (getLeftVelocity() - prevLeftVelocity) / (currentTime - prevTime);
+    this.rightAcceleration = (getRightVelocity() - prevRightVelocity) / (currentTime - prevTime);
 
-   //this.rightVelocity = (currentRightDistance - prevRightDistance) / (currentTime - prevTime);
-    this.rightAcceleration = (this.getRightVelocity() - prevRightVelocity) / (currentTime - prevTime);
-
-    //this.prevLeftDistance = currentLeftDistance;
-    this.prevLeftVelocity = this.getLeftVelocity();
-
-    //this.prevRightDistance = currentRightDistance;
-    this.prevRightVelocity = this.getRightVelocity();
+    this.prevLeftVelocity = getLeftVelocity();
+    this.prevRightVelocity = getRightVelocity();
 
     this.prevTime = currentTime;
-
   }
 }

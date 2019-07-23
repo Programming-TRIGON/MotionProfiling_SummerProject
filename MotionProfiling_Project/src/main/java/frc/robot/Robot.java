@@ -24,7 +24,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   public static DashBoardController dbc;
-  public static DriveTrain driveTrain;
+  public static Drivetrain drivetrain;
   public static OI oi;
 
   @Override
@@ -33,18 +33,18 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    this.driveTrain = new DriveTrain();
+    Robot.drivetrain = new Drivetrain();
 
     Robot.dbc = new DashBoardController();
     Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.45);
-    dbc.addNumber("Left encoder", this.driveTrain::getLeftDistance);
-    dbc.addNumber("Right encoder", this.driveTrain::getRightDistance);
-    dbc.addNumber("Both encoders", this.driveTrain::getAverageDistance);
-    dbc.addNumber("Gyro angle", this.driveTrain::getAngle);
-    dbc.addNumber("Right velocity", this.driveTrain::getRightVelocity);
-    dbc.addNumber("Left velocity", this.driveTrain::getLeftVelocity);
-    dbc.addNumber("Right acceleration", this.driveTrain::getRightAcceleration);
-    dbc.addNumber("left acceleration", this.driveTrain::getLeftAcceleration);
+    dbc.addNumber("Left encoder", Robot.drivetrain::getLeftDistance);
+    dbc.addNumber("Right encoder", Robot.drivetrain::getRightDistance);
+    dbc.addNumber("Both encoders", Robot.drivetrain::getAverageDistance);
+    dbc.addNumber("Gyro angle", Robot.drivetrain::getAngle);
+    dbc.addNumber("Right velocity", Robot.drivetrain::getRightVelocity);
+    dbc.addNumber("Left velocity", Robot.drivetrain::getLeftVelocity);
+    dbc.addNumber("Right acceleration", Robot.drivetrain::getRightAcceleration);
+    dbc.addNumber("left acceleration", Robot.drivetrain::getLeftAcceleration);
     SmartDashboard.putData("test kv", new CalibrateKv(false, voltageSupplier));
     SmartDashboard.putData("test ka",
         new CalibrateKa(RobotConstants.Calibration.leftForwardKv, RobotConstants.Calibration.rightForwardKv,
