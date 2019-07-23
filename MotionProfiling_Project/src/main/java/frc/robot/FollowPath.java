@@ -40,10 +40,10 @@ public class FollowPath extends Command {
    * calculation in the beginning - / + the KP.
    */
   protected void execute() {
-    this.leftCalculate = this.left.calculate(Robot.driveTrain.getLeftTicks());
-    this.rightCalculate = this.right.calculate(Robot.driveTrain.getRightTicks());
+    this.leftCalculate = this.left.calculate(Robot.drivetrain.getLeftTicks());
+    this.rightCalculate = this.right.calculate(Robot.drivetrain.getRightTicks());
 
-    this.gyroHeading = Robot.driveTrain.getAngle();
+    this.gyroHeading = Robot.drivetrain.getAngle();
     this.desiredHeading = Pathfinder.r2d(this.left.getHeading());
     this.angleDifference = Pathfinder.boundHalfDegrees(desiredHeading - gyroHeading);
 
