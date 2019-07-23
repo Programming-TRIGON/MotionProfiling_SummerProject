@@ -15,9 +15,9 @@ import frc.robot.utils.Logger;
 public class CalibrateKa extends Command {
   // TODO: change values.
   private static final double EPSILON_ACC = 1e-2;
-  private static final double EPSILON_VEL = 0.2;
+  private static final double EPSILON_VEL = 0.4;
   private static final double VOLTAGE = 1;
-  private static final double MAX_DISTANCE = 2.5;
+  private static final double MAX_DISTANCE = 7.5;
 
   private Logger leftLogger;
   private Logger rightLogger;
