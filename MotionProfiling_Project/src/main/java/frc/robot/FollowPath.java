@@ -26,11 +26,16 @@ public class FollowPath extends Command {
   @Override
   /** We configure the encoder and the PIDVA */
   protected void initialize() {
-    this.left.configureEncoder(Robot.drivetrain.getLeftTicks(), RobotConstants.TICKS_PER_REVOLUTION,
+    this.left.configureEncoder(Robot.drivetrain.getLeftTicks(), RobotConstants.TICKS_PER_METER_LEFT,
         RobotConstants.WHEEL_DIAMETER);
-    this.left.configurePIDVA(RobotConstants.MOTION_PROFILING_PID_SETTINGS.KP, 0,
-        RobotConstants.MOTION_PROFILING_PID_SETTINGS.KD, 1 / RobotConstants.MOTION_PROFILING_PID_SETTINGS.KV,
-        RobotConstants.MOTION_PROFILING_PID_SETTINGS.KA);
+    this.right.configureEncoder(Robot.drivetrain.getRightTicks(), RobotConstants.TICKS_PER_METER_RIGHT,
+        RobotConstants.WHEEL_DIAMETER);
+    this.left.configurePIDVA(RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KP, 0,
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KD, 1 / RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KV,
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KA);
+    this.right.configurePIDVA(RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KP, 0,
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KD, 1 / RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KV,
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KA);    
   }
 
   @Override

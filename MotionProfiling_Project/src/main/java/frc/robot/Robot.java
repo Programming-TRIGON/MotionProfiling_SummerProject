@@ -36,6 +36,8 @@ public class Robot extends TimedRobot {
     dbc.addNumber("Left velocity", Robot.drivetrain::getLeftVelocity);
     dbc.addNumber("Right acceleration", Robot.drivetrain::getRightAcceleration);
     dbc.addNumber("left acceleration", Robot.drivetrain::getLeftAcceleration);
+    dbc.addNumber("left ticks", Robot.drivetrain::getLeftTicks);
+    dbc.addNumber("right ticks", Robot.drivetrain::getRightTicks);
 
     Robot.oi = new OI();
     Robot.pathCreater = new PathCreater();

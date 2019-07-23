@@ -19,13 +19,15 @@ public class RobotConstants {
     public static final double MAX_ACCELERATION = 2;
     public static final double MAX_JERK = 80;
 
-    public static final PidSettings MOTION_PROFILING_PID_SETTINGS = new PidSettings(0, 0, 80, 0);
+    public static final PidSettings MOTION_PROFILING_PID_SETTINGS_LEFT = new PidSettings(0.3, 0, 0, 0);
+    public static final PidSettings MOTION_PROFILING_PID_SETTINGS_RIGHT = new PidSettings(0.3, 0, 0, 0);
 
     public static final double MOTION_PROFILING_KP_TURN = 0.8;
 
     public static final double TICKS_PER_METER_RIGHT = 575.0;
     public static final double TICKS_PER_METER_LEFT = 771.5;
-    public static final int TICKS_PER_REVOLUTION = 50;
+    public static final int TICKS_PER_REVOLUTION_RIGHT = 50;
+    public static final int TICKS_PER_REVOLUTION_LEFT = 3;
 
     public enum Path {
         SCALE(new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2, -3, 0) });
