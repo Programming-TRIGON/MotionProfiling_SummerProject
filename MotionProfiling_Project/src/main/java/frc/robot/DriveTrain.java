@@ -101,6 +101,10 @@ public class Drivetrain extends Subsystem {
     this.gyro.calibrate();
   }
 
+  public int getLeftTicks(){
+    return this.leftEncoder.get();
+  }
+
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new DriveArcade());

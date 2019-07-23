@@ -16,7 +16,7 @@ public class FollowPath extends Command {
 
   /** This command gets the path number and then follows it */
   public FollowPath(int pathNumber) {
-    requires(Robot.driveTrain);
+    requires(Robot.drivetrain);
     this.pathNumber = pathNumber;
 
     this.left = new EncoderFollower(Robot.pathCreater.getSplitTrajectories(this.pathNumber)[0]);
@@ -26,7 +26,7 @@ public class FollowPath extends Command {
   @Override
   /** We configure the encoder and the PIDVA */
   protected void initialize() {
-    this.left.configureEncoder(Robot.driveTrain.getLeftTicks(), RobotConstants.TICKS_PER_REVOLUTION,
+    this.left.configureEncoder(Robot.drivetrain.getLeftTicks(), RobotConstants.TICKS_PER_REVOLUTION,
         RobotConstants.WHEEL_DIAMETER);
     this.left.configurePIDVA(RobotConstants.MOTION_PROFILING_PID_SETTINGS.KP, 0,
         RobotConstants.MOTION_PROFILING_PID_SETTINGS.KD, 1 / RobotConstants.MOTION_PROFILING_PID_SETTINGS.KV,
@@ -54,7 +54,7 @@ public class FollowPath extends Command {
 
     this.turn = RobotConstants.MOTION_PROFILING_KP_TURN * (-1.0 / 80.0) * this.angleDifference;
 
-    Robot.driveTrain.tankDrive(this.leftCalculate + turn, this.rightCalculate - turn);
+    Robot.drivetrain.tankDrive(this.leftCalculate + turn, this.rightCalculate - turn);
   }
 
   @Override
@@ -64,7 +64,7 @@ public class FollowPath extends Command {
 
   @Override
   protected void end() {
-    Robot.driveTrain.tankDrive(0, 0);
+    Robot.drivetrain.tankDrive(0, 0);
   }
 
   @Override
