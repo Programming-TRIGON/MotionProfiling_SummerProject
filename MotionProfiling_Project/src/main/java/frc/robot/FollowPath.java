@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.PathCreater.Path;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.followers.EncoderFollower;
 
@@ -10,17 +11,15 @@ import jaci.pathfinder.followers.EncoderFollower;
  */
 public class FollowPath extends Command {
 
-  private int pathNumber;
   private EncoderFollower right, left;
   private double leftCalculate, rightCalculate, gyroHeading, desiredHeading, angleDifference, turn, angleDiff;
 
   /** This command gets the path number and then follows it */
-  public FollowPath(int pathNumber) {
+  public FollowPath(Path path) {
     requires(Robot.drivetrain);
-    this.pathNumber = pathNumber;
 
-    this.left = new EncoderFollower(Robot.pathCreater.getSplitTrajectories(this.pathNumber)[0]);
-    this.right = new EncoderFollower(Robot.pathCreater.getSplitTrajectories(this.pathNumber)[1]);
+    this.left = new EncoderFollower(Robot.pathCreater.getSplitTrajectories(path)[0]);
+    this.right = new EncoderFollower(Robot.pathCreater.getSplitTrajectories(path)[1]);
   }
 
   @Override

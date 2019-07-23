@@ -13,7 +13,7 @@ import jaci.pathfinder.modifiers.TankModifier;
  */
 public class PathCreater {
 
-    private Trajectory.Config config;
+    public final Trajectory.Config config;
     private ArrayList<Waypoint[]> paths;
     private Trajectory[] trajectories;
     private TankModifier modifier;
@@ -27,6 +27,7 @@ public class PathCreater {
                 RobotConstants.TIMEFRAME, RobotConstants.MAX_VELOCITY, RobotConstants.MAX_ACCELERATION,
                 RobotConstants.MAX_JERK);
         this.paths.add(new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2, -3, 0) });
+
 
         generate_AllPaths();
     }
@@ -42,8 +43,8 @@ public class PathCreater {
      * We split the tank drive for bOth sides of the robot and get the trajectory of
      * each one. The index for the right trajectory is 0 and for the left its 1.
      */
-    public Trajectory[] getSplitTrajectories(int pathNumber) {
-        this.modifier = new TankModifier(trajectories[pathNumber]);
+    public Trajectory[] getSplitTrajectories(Path path) {
+        this.modifier = new TankModifier(path.getTrajectory());
         this.modifier.modify(RobotConstants.WHEEL_BASE_WIDTH);
         Trajectory[] trajectories = { this.modifier.getRightTrajectory(), this.modifier.getLeftTrajectory() };
         return trajectories;
@@ -54,6 +55,20 @@ public class PathCreater {
         for (int i = 0; i < this.paths.size(); i++) {
             String s = "/home/lvuser/Paths " + i + 1 + ".csv";
             Pathfinder.writeToCSV(new File(s), this.trajectories[i]);
+        }
+    }
+
+    public enum Path{
+        TO_SWITCH(new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(1, -3, 0), new Waypoint(3, 2, 0) }),
+        TO_SCALE(new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2, -3, 0) });
+
+        private final Trajectory trajectory;
+        private Path(Waypoint[] path){
+            trajectory = Pathfinder.generate(path, Robot.pathCreater.config);
+        }
+
+        public Trajectory getTrajectory(){
+            return trajectory;
         }
     }
 }
