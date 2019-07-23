@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.PathCreater.Path;
 
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
@@ -38,6 +39,8 @@ public class Robot extends TimedRobot {
     dbc.addNumber("left acceleration", Robot.drivetrain::getLeftAcceleration);
     dbc.addNumber("left ticks", Robot.drivetrain::getLeftTicks);
     dbc.addNumber("right ticks", Robot.drivetrain::getRightTicks);
+
+    SmartDashboard.putData("test path", new FollowPath(Path.SCALE));
 
     Robot.oi = new OI();
     Robot.pathCreater = new PathCreater();

@@ -1,7 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.RobotConstants.Path;
+import frc.robot.PathCreater.Path;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.followers.EncoderFollower;
 
@@ -26,16 +26,20 @@ public class FollowPath extends Command {
   @Override
   /** We configure the encoder and the PIDVA */
   protected void initialize() {
-    this.left.configureEncoder(Robot.drivetrain.getLeftTicks(), RobotConstants.TICKS_PER_METER_LEFT,
+    this.left.configureEncoder(Robot.drivetrain.getLeftTicks(), RobotConstants.TICKS_PER_REVOLUTION_LEFT,
         RobotConstants.WHEEL_DIAMETER);
-    this.right.configureEncoder(Robot.drivetrain.getRightTicks(), RobotConstants.TICKS_PER_METER_RIGHT,
+    this.right.configureEncoder(Robot.drivetrain.getRightTicks(), RobotConstants.TICKS_PER_REVOLUTION_RIGHT,
         RobotConstants.WHEEL_DIAMETER);
     this.left.configurePIDVA(RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KP, 0,
-        RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KD, 1 / RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KV,
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KD, RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KV,
         RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KA);
     this.right.configurePIDVA(RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KP, 0,
-        RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KD, 1 / RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KV,
-        RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KA);    
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KD, RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KV,
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KA);
+    this.left.configurePIDVA(0.3,0.1,0.5,0.1,0.1);   
+    this.right.configurePIDVA(0.3,0.1,0.5,0.1,0.1); 
+    Robot.drivetrain.resetEncoders();
+    Robot.drivetrain.resetGyro();
   }
 
   @Override
@@ -60,6 +64,7 @@ public class FollowPath extends Command {
     this.turn = RobotConstants.MOTION_PROFILING_KP_TURN * (-1.0 / 80.0) * this.angleDifference;
 
     Robot.drivetrain.tankDrive(this.leftCalculate + turn, this.rightCalculate - turn);
+    //Robot.drivetrain.tankDrive(this.leftCalculate, this.rightCalculate);
   }
 
   @Override
