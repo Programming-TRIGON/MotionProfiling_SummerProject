@@ -1,7 +1,6 @@
 package frc.robot.motionprofile;
 
 import frc.robot.RobotConstants;
-import frc.robot.motionprofile.Path;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.modifiers.TankModifier;
 
@@ -15,8 +14,7 @@ public class SplitTrajectories {
 
     public SplitTrajectories(Path path) {
         this.path = path;
-        this.modifier = new TankModifier(this.path.getTrajectory());
-        this.modifier.modify(RobotConstants.WHEEL_BASE_WIDTH);
+        this.modifier = new TankModifier(this.path.getTrajectory()).modify(RobotConstants.WHEEL_BASE_WIDTH);
     }
 
     public Trajectory getRightTrajectory() {

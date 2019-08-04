@@ -22,13 +22,14 @@ public class FollowPath extends Command {
   public FollowPath(Path path) {
     requires(Robot.drivetrain);
     this.splitTrajectories = new SplitTrajectories(path); // splits the path to two sides of the robot.
-    this.left = new EncoderFollower(splitTrajectories.getLeftTrajectory());
-    this.right = new EncoderFollower(splitTrajectories.getRightTrajectory());
+    
   }
 
   @Override
   /** We configure the encoder and the PIDVA */
   protected void initialize() {
+    this.left = new EncoderFollower(splitTrajectories.getLeftTrajectory());
+    this.right = new EncoderFollower(splitTrajectories.getRightTrajectory());
     this.left.configureEncoder(Robot.drivetrain.getLeftTicks(), RobotConstants.TICKS_PER_REVOLUTION_LEFT,
         RobotConstants.WHEEL_DIAMETER);
     this.right.configureEncoder(Robot.drivetrain.getRightTicks(), RobotConstants.TICKS_PER_REVOLUTION_RIGHT,
