@@ -16,7 +16,7 @@ public class OI {
         this.resetEncodersButton.whenPressed(new InstantCommand(() -> Robot.driveTrain.resetEncoders()));
         driveTest = new JoystickButton(driver, 2);
         driveTest.whileHeld(new DriveArcade(() -> 0.0, () -> 1.0));
-        CameraServer.getInstance().startAutomaticCapture(0);
+        //CameraServer.getInstance().startAutomaticCapture(0);
         MaxSpeedStop = new JoystickButton(driver, 3);
     }
     
