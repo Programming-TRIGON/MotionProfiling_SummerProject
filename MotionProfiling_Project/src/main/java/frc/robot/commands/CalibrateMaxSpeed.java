@@ -19,18 +19,18 @@ public class CalibrateMaxSpeed extends Command {
   protected void execute() {
     if(this.isReversed){
       if(Robot.driveTrain.getRightVelocity() < rightReverseMaxSpeed){
-        rightReverseMaxSpeed = Robot.driveTrain.getRightAcceleration();
+        rightReverseMaxSpeed = Robot.driveTrain.getRightVelocity();
       }
       if(Robot.driveTrain.getLeftVelocity() < leftReverseMaxSpeed){
-        leftReverseMaxSpeed = Robot.driveTrain.getLeftAcceleration();
+        leftReverseMaxSpeed = Robot.driveTrain.getLeftVelocity();
       }
     }
     else{
       if(Robot.driveTrain.getRightVelocity() > rightForwardMaxSpeed) {
-        rightForwardMaxSpeed = Robot.driveTrain.getRightAcceleration();
+        rightForwardMaxSpeed = Robot.driveTrain.getRightVelocity();
       }
       if(Robot.driveTrain.getLeftVelocity() > leftForwardMaxSpeed){
-        leftForwardMaxSpeed = Robot.driveTrain.getLeftAcceleration();
+        leftForwardMaxSpeed = Robot.driveTrain.getLeftVelocity();
       }
     }
   }
