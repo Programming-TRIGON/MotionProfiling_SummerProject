@@ -41,12 +41,12 @@ public class CalibrateMaxSpeed extends Command {
   @Override
   protected void end() {
     if(isReversed){
-      System.out.println("RightReverseMaxSpeed: " + rightReverseMaxSpeed);
-      System.out.println("LeftReverseMaxSpeed: " + leftReverseMaxSpeed);
+      System.out.println("Right reverse max speed: " + rightReverseMaxSpeed);
+      System.out.println("Left reverse max speed: " + leftReverseMaxSpeed);
     }
     else{
-      System.out.println("RightForwardMaxSpeed: " + rightForwardMaxSpeed);
-      System.out.println("LeftFrowardMaxSpeed: " + leftForwardMaxSpeed);
+      System.out.println("Right forward max speed: " + rightForwardMaxSpeed);
+      System.out.println("Left forward max speed: " + leftForwardMaxSpeed);
     }
   }
   @Override
