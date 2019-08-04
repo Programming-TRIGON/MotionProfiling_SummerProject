@@ -1,7 +1,6 @@
 package frc.robot;
 
 import com.analog.adis16448.frc.ADIS16448_IMU;
-import com.analog.adis16448.frc.ADIS16448_IMU.Axis;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -19,7 +18,6 @@ public class Drivetrain extends Subsystem {
   private DifferentialDrive driveTrain;
   private ADIS16448_IMU gyro;
   private Encoder leftEncoder, rightEncoder;
-  private double RIGHT_TICKS_DIVIDER = 575.0, LEFT_TICKS_DIVIDER = 771.5;
   private double prevTime = 0, leftAcceleration = 0, rightAcceleration = 0,
    prevLeftVelocity = 0, prevRightVelocity = 0;
   
@@ -33,19 +31,19 @@ public class Drivetrain extends Subsystem {
     this.leftEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_B);
     this.rightEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_B);
 
-    this.leftEncoder.setDistancePerPulse(LEFT_TICKS_DIVIDER);
-    this.rightEncoder.setDistancePerPulse(RIGHT_TICKS_DIVIDER);
+    this.leftEncoder.setDistancePerPulse(RobotConstants.TICKS_PER_METER_LEFT);
+    this.rightEncoder.setDistancePerPulse(RobotConstants.TICKS_PER_METER_RIGHT);
 
     this.leftEncoder.setReverseDirection(true);
     this.rightEncoder.setReverseDirection(false);
 
   }
 
-  public void tankDrive(double leftSpeed, double rightSpeed){
+  public void tankDrive(double leftSpeed, double rightSpeed) {
     this.driveTrain.tankDrive(leftSpeed, rightSpeed);
   }
 
-  public void arcadeDrive(double x, double y){
+  public void arcadeDrive(double x, double y) {
     this.driveTrain.arcadeDrive(y, x);
   }
 
@@ -62,7 +60,13 @@ public class Drivetrain extends Subsystem {
     return this.rightEncoder.getDistance();
   }
 
-  public double getAverageDistance(){
+  /** Gets the distance in ticks the right motor has driven */
+  public int getRightTicks() {
+    return this.rightEncoder.get();
+  }
+
+  /** Gets the average distance in meters the robot has driven */
+  public double getAverageDistance() {
     return (getLeftDistance() + getRightDistance()) / 2;
   }
 
@@ -86,7 +90,7 @@ public class Drivetrain extends Subsystem {
     this.leftEncoder.reset();
     this.rightEncoder.reset();
   }
-  
+
   public void resetGyro() {
     this.gyro.reset();
   }
@@ -95,11 +99,16 @@ public class Drivetrain extends Subsystem {
     this.gyro.calibrate();
   }
 
+  public int getLeftTicks(){
+    return this.leftEncoder.get();
+  }
+
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new DriveArcade());
   }
 
+  /** we calculate the acceleration of the robot as well as its velocity*/
   @Override
   public void periodic() {
     double currentTime = Timer.getFPGATimestamp();
