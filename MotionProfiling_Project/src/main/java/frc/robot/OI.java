@@ -9,16 +9,17 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 public class OI {
     public Joystick driver = new Joystick(0);
     public Button resetEncodersButton;
-    public Button driveTest;
+    public Button driveTest, MaxSpeedStop;
 
     public OI() {
         this.resetEncodersButton = new JoystickButton(driver, 1);
         this.resetEncodersButton.whenPressed(new InstantCommand(() -> Robot.driveTrain.resetEncoders()));
         driveTest = new JoystickButton(driver, 2);
-        driveTest.whileHeld(new DriveArcade(() -> 0.0, () -> 0.5));
+        driveTest.whileHeld(new DriveArcade(() -> 0.0, () -> 1.0));
         CameraServer.getInstance().startAutomaticCapture(0);
+        MaxSpeedStop = new JoystickButton(driver, 3);
     }
-
+    
     public double getJoystickX() {
         return this.driver.getX();
     }

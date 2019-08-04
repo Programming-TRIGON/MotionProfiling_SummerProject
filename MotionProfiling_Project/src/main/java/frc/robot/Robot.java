@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CalibrateKa;
 import frc.robot.commands.CalibrateKv;
+import frc.robot.commands.CalibrateMaxSpeed;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -53,7 +54,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("test ka",
         new CalibrateKa(RobotConstants.Calibration.leftForwardKv, RobotConstants.Calibration.rightForwardKv,
             RobotConstants.Calibration.leftForwardVi, RobotConstants.Calibration.rightForwardVi, false));
+    SmartDashboard.putData("Max speed Kv forward", new CalibrateMaxSpeed(false));
+    SmartDashboard.putData("Max speed Kv Reversed", new CalibrateMaxSpeed(true));
     Robot.oi = new OI();
+
 
     Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
         new Waypoint(2, -3, 0) // Waypoint @ x=-2, y=-2, exit angle=0 radians
