@@ -6,7 +6,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.PathCreater.Path;
+import frc.robot.motionprofile.FollowPath;
+import frc.robot.motionprofile.Path;
+import frc.robot.motionprofile.PathCreater;
 
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";

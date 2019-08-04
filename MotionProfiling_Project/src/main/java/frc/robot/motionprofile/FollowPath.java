@@ -1,9 +1,12 @@
-package frc.robot;
+package frc.robot.motionprofile;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.PathCreater.Path;
+import frc.robot.Robot;
+import frc.robot.RobotConstants;
+import frc.robot.motionprofile.Path;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.followers.EncoderFollower;
+
 
 /**
  * This command uses the paths we generated on the path creater and uses it to
@@ -30,12 +33,12 @@ public class FollowPath extends Command {
         RobotConstants.WHEEL_DIAMETER);
     this.right.configureEncoder(Robot.drivetrain.getRightTicks(), RobotConstants.TICKS_PER_REVOLUTION_RIGHT,
         RobotConstants.WHEEL_DIAMETER);
-    this.left.configurePIDVA(RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KP, 0,
-        RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KD, RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KV,
-        RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.KA);
-    this.right.configurePIDVA(RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KP, 0,
-        RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KD, RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KV,
-        RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.KA);
+    this.left.configurePIDVA(RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.getKP(), 0,
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.getKD(), RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.getKV(),
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS_LEFT.getKA());
+    this.right.configurePIDVA(RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.getKP(), 0,
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.getKD(), RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.getKV(),
+        RobotConstants.MOTION_PROFILING_PID_SETTINGS_RIGHT.getKA());
     this.left.configurePIDVA(0.3,0.1,0.5,0.1,0.1);   
     this.right.configurePIDVA(0.3,0.1,0.5,0.1,0.1); 
     Robot.drivetrain.resetEncoders();
