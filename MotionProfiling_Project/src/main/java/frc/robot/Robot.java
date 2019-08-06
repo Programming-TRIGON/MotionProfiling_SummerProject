@@ -1,7 +1,6 @@
 package frc.robot;
 
 import com.spikes2212.dashboard.DashBoardController;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -43,6 +42,8 @@ public class Robot extends TimedRobot {
     dbc.addNumber("right ticks", Robot.drivetrain::getRightTicks);
 
     SmartDashboard.putData("test path", new FollowPath(Path.SCALE));
+      SmartDashboard.putData("test jaci", new FollowPath(Path.TEST_JACI));
+      SmartDashboard.putData("test csv reader", new FollowPath(Path.TEST));
 
     Robot.oi = new OI();
     Robot.pathCreater = new PathCreater();

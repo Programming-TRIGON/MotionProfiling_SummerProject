@@ -6,18 +6,18 @@ import jaci.pathfinder.Trajectory.Segment;
 
 import java.io.*;
 
-/**
- * Takes the csv file and translates it to a trajectory for the motionProfiling!
- */
 public class CsvReader {
-
+    /**
+     * Takes the csv file and translates it to a trajectory for the motionProfiling!
+     *
+     * @param path to the file in absulute path.
+     * @return a trajectory
+     */
     public static Trajectory read(String path) {
         Segment[] segments = null;
-        try {
+        File file = new File(path);
+        try (FileReader r = new FileReader(file); BufferedReader br = new BufferedReader(r)) {
             segments = new Segment[countLines(path)];
-            File file = new File(path);
-        FileReader r = new FileReader(file);
-        BufferedReader br = new BufferedReader(r);
             for (int i = 0; i < segments.length; i++) {
                 String line = br.readLine();
                 String[] numbers = line.split(",");
@@ -28,18 +28,16 @@ public class CsvReader {
                 double p = Double.parseDouble(numbers[3]);
                 double v = Double.parseDouble(numbers[4]);
                 double a = Double.parseDouble(numbers[5]);
-                double h = Double.parseDouble(numbers[6]);
-                segments[i] = new Segment(dt, x, y, p, v, a, 0, h);
+                double h = Math.toRadians(Double.parseDouble(numbers[6]));
+                segments[i] = new Segment(dt, x, -y, p, v, a, 0, -h);
             }
-            br.close();
-            r.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return new Trajectory(segments);
     }
 
-    //taken from stackOverflow
+    // Taken from stackOverflow. This function counts the amount of lines in a text file.
     private static int countLines(String filename) throws IOException {
 
         try (InputStream is = new BufferedInputStream(new FileInputStream(filename))) {
