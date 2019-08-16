@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CalibrateKa;
 import frc.robot.commands.CalibrateKv;
 import frc.robot.commands.CalibrateMaxSpeed;
+import frc.robot.utils.Limelight;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -28,6 +29,7 @@ public class Robot extends TimedRobot {
   public static DashBoardController dbc;
   public static DriveTrain driveTrain;
   public static OI oi;
+  public static Limelight limelight;
 
   @Override
   public void robotInit() {
@@ -36,6 +38,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     Robot.driveTrain = new DriveTrain();
+    Robot.limelight = new Limelight();
 
     Robot.dbc = new DashBoardController();
     Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.45);

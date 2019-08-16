@@ -1,8 +1,9 @@
-package frc.robot;
+package frc.robot.commands;
 
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
 public class DriveArcade extends Command {
   private Supplier<Double> x;
