@@ -1,10 +1,20 @@
 package frc.robot;
 
+import java.io.File;
+import java.util.function.Supplier;
+import com.spikes2212.dashboard.ConstantHandler;
 import com.spikes2212.dashboard.DashBoardController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.CalibrateKa;
+import frc.robot.commands.CalibrateKv;
+import frc.robot.commands.CalibrateMaxSpeed;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Waypoint;
 import frc.robot.motionprofile.FollowPath;
 import frc.robot.motionprofile.Path;
 import frc.robot.motionprofile.PathCreater;
@@ -12,11 +22,12 @@ import frc.robot.motionprofile.PathCreater;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
+
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   public static DashBoardController dbc;
-  public static Drivetrain drivetrain;
+  public static DriveTrain driveTrain;
   public static OI oi;
   public static PathCreater pathCreater;
 
@@ -26,7 +37,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    Robot.drivetrain = new Drivetrain();
+    Robot.driveTrain = new DriveTrain();
 
     Robot.dbc = new DashBoardController();
 
@@ -42,11 +53,21 @@ public class Robot extends TimedRobot {
     dbc.addNumber("right ticks", Robot.drivetrain::getRightTicks);
 
     SmartDashboard.putData("test path", new FollowPath(Path.SCALE));
-      SmartDashboard.putData("test jaci", new FollowPath(Path.TEST_JACI));
-      SmartDashboard.putData("test csv reader", new FollowPath(Path.TEST));
-
-    Robot.oi = new OI();
+    SmartDashboard.putData("test jaci", new FollowPath(Path.TEST_JACI));
+    SmartDashboard.putData("test csv reader", new FollowPath(Path.TEST));
+    SmartDashboard.putData("Max speed Kv forward", new CalibrateMaxSpeed(false));
+    SmartDashboard.putData("Max speed Kv Reversed", new CalibrateMaxSpeed(true));  
+    SmartDashboard.putData("test kv", new CalibrateKv(false, voltageSupplier));
+    SmartDashboard.putData("test ka",
+        new CalibrateKa(RobotConstants.Calibration.leftForwardKv, RobotConstants.Calibration.rightForwardKv,
+            RobotConstants.Calibration.leftForwardVi, RobotConstants.Calibration.rightForwardVi, false));
+    Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.45);
+    InstantCommand reset = new InstantCommand(Robot.driveTrain::resetEncoders);
+    reset.setRunWhenDisabled(true);
+    SmartDashboard.putData("reset", reset);
+    
     Robot.pathCreater = new PathCreater();
+    Robot.oi = new OI();
   }
 
   @Override

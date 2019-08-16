@@ -29,4 +29,10 @@ public class RobotConstants {
     public static final int TICKS_PER_REVOLUTION_RIGHT = 290;
     public static final int TICKS_PER_REVOLUTION_LEFT = 360;
     
+    public class Calibration{
+        public static final double leftForwardKv = 0.2103;
+        public static final double leftForwardVi = 0.3717;
+        public static final double rightForwardKv = 0.1929;
+        public static final double rightForwardVi = 0.3913;
+    }
 }

@@ -1,10 +1,16 @@
 package frc.robot;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveArcade extends Command {
-  public DriveArcade() {
-    requires(Robot.drivetrain);
+  private Supplier<Double> x;
+private Supplier<Double> y; 
+  public DriveArcade(Supplier<Double> x,Supplier<Double> y) {
+    requires(Robot.driveTrain);
+    this.x = x;
+    this.y = y;
   }
 
   @Override
@@ -13,7 +19,7 @@ public class DriveArcade extends Command {
 
   @Override
   protected void execute() {
-    Robot.drivetrain.arcadeDrive(Robot.oi.getJoystickX(), Robot.oi.getJoystickY());
+    Robot.driveTrain.arcadeDrive(x.get(), y.get());
   }
 
   @Override
@@ -23,7 +29,7 @@ public class DriveArcade extends Command {
 
   @Override
   protected void end() {
-    Robot.drivetrain.arcadeDrive(0, 0);
+    Robot.driveTrain.arcadeDrive(0, 0);
   }
 
   @Override

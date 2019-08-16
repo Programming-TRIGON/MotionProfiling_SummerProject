@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.sql.Time;
+
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -12,9 +14,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 /**
  * This is the drive, chassis, subsystem.
  */
-public class Drivetrain extends Subsystem {
-  
-  private SpeedControllerGroup leftGroup, rightGroup; 
+public class DriveTrain extends Subsystem {
+
+  private SpeedControllerGroup leftGroup, rightGroup;
   private DifferentialDrive driveTrain;
   private ADIS16448_IMU gyro;
   private Encoder leftEncoder, rightEncoder;
@@ -23,13 +25,17 @@ public class Drivetrain extends Subsystem {
   
   public Drivetrain(){
     super();
-    this.rightGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_RIGHT_MOTOR), new WPI_TalonSRX(RobotMap.CAN.FRONT_RIGHT_MOTOR));
-    this.leftGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_LEFT_MOTOR), new WPI_TalonSRX(RobotMap.CAN.FRONT_LEFT_MOTOR));  
+    this.rightGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_RIGHT_MOTOR),
+        new WPI_TalonSRX(RobotMap.CAN.FRONT_RIGHT_MOTOR));
+    this.leftGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_LEFT_MOTOR),
+        new WPI_TalonSRX(RobotMap.CAN.FRONT_LEFT_MOTOR));
     this.driveTrain = new DifferentialDrive(this.leftGroup, this.rightGroup);
-    //this.gyro = new ADXRS450_Gyro();
+    // this.gyro = new ADXRS450_Gyro();
     this.gyro = new ADIS16448_IMU();
-    this.leftEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_B);
-    this.rightEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_A, RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_B);
+    this.leftEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_A,
+        RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_B);
+    this.rightEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_A,
+        RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_B);
 
     this.leftEncoder.setDistancePerPulse(RobotConstants.TICKS_PER_METER_LEFT);
     this.rightEncoder.setDistancePerPulse(RobotConstants.TICKS_PER_METER_RIGHT);
@@ -47,16 +53,15 @@ public class Drivetrain extends Subsystem {
     this.driveTrain.arcadeDrive(y, x);
   }
 
-  public double getAngle(){
+  public double getAngle() {
     return this.gyro.getAngleZ();
   }
 
-  public double getLeftDistance(){
+  public double getLeftDistance() {
     return this.leftEncoder.getDistance();
   }
 
-
-  public double getRightDistance(){
+  public double getRightDistance() {
     return this.rightEncoder.getDistance();
   }
 
@@ -70,11 +75,11 @@ public class Drivetrain extends Subsystem {
     return (getLeftDistance() + getRightDistance()) / 2;
   }
 
-  public double getRightVelocity(){
+  public double getRightVelocity() {
     return rightEncoder.getRate();
   }
 
-  public double getLeftVelocity(){
+  public double getLeftVelocity() {
     return leftEncoder.getRate();
   }
 
@@ -105,7 +110,7 @@ public class Drivetrain extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new DriveArcade());
+    setDefaultCommand(new DriveArcade(Robot.oi::getJoystickX, Robot.oi::getJoystickY));
   }
 
   /** we calculate the acceleration of the robot as well as its velocity*/
