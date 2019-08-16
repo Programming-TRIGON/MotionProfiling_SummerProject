@@ -9,5 +9,11 @@ public class RobotConstants {
         public static final double leftForwardVi = 0.3717;
         public static final double rightForwardKv = 0.1929;
         public static final double rightForwardVi = 0.3913;
+
+
+    }
+    public static class RobotDimensions{
+        public static final double LIMELIGHT_HEIGHT = 0;
+        public static final double LIMELIGHT_ANGLE = 0;
     }
 }

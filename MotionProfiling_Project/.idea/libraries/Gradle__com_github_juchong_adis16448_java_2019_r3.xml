@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.juchong:adis16448-java:2019-r3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../2019RobotCode/.gradle/caches/modules-2/files-2.1/com.github.juchong/adis16448-java/2019-r3/50b2a48613ed1c98026daf6782c4c3677cb8a882/adis16448-java-2019-r3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../2019RobotCode/.gradle/caches/modules-2/files-2.1/com.github.juchong/adis16448-java/2019-r3/531e25da8d6dbc0cb61c15d9e0fd005b333a96b0/adis16448-java-2019-r3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
