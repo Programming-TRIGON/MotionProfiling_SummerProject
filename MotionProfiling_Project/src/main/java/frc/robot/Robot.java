@@ -2,10 +2,8 @@ package frc.robot;
 
 import java.io.File;
 import java.util.function.Supplier;
-
 import com.spikes2212.dashboard.ConstantHandler;
 import com.spikes2212.dashboard.DashBoardController;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -17,6 +15,9 @@ import frc.robot.commands.CalibrateMaxSpeed;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
+import frc.robot.motionprofile.FollowPath;
+import frc.robot.motionprofile.Path;
+import frc.robot.motionprofile.PathCreater;
 
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
@@ -28,6 +29,7 @@ public class Robot extends TimedRobot {
   public static DashBoardController dbc;
   public static DriveTrain driveTrain;
   public static OI oi;
+  public static PathCreater pathCreater;
 
   @Override
   public void robotInit() {
@@ -38,36 +40,34 @@ public class Robot extends TimedRobot {
     Robot.driveTrain = new DriveTrain();
 
     Robot.dbc = new DashBoardController();
-    Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.45);
-    dbc.addNumber("Left encoder", Robot.driveTrain::getLeftDistance);
-    dbc.addNumber("Right encoder", Robot.driveTrain::getRightDistance);
-    dbc.addNumber("Both encoders", Robot.driveTrain::getAverageDistance);
-    dbc.addNumber("Gyro angle", Robot.driveTrain::getAngle);
-    dbc.addNumber("Right velocity", Robot.driveTrain::getRightVelocity);
-    dbc.addNumber("Left velocity", Robot.driveTrain::getLeftVelocity);
-    dbc.addNumber("Right acceleration", Robot.driveTrain::getRightAcceleration);
-    dbc.addNumber("left acceleration", Robot.driveTrain::getLeftAcceleration);
-    InstantCommand reset = new InstantCommand(Robot.driveTrain::resetEncoders);
-    reset.setRunWhenDisabled(true);
-    SmartDashboard.putData("reset", reset);
+
+    dbc.addNumber("Left encoder", Robot.drivetrain::getLeftDistance);
+    dbc.addNumber("Right encoder", Robot.drivetrain::getRightDistance);
+    dbc.addNumber("Both encoders", Robot.drivetrain::getAverageDistance);
+    dbc.addNumber("Gyro angle", Robot.drivetrain::getAngle);
+    dbc.addNumber("Right velocity", Robot.drivetrain::getRightVelocity);
+    dbc.addNumber("Left velocity", Robot.drivetrain::getLeftVelocity);
+    dbc.addNumber("Right acceleration", Robot.drivetrain::getRightAcceleration);
+    dbc.addNumber("left acceleration", Robot.drivetrain::getLeftAcceleration);
+    dbc.addNumber("left ticks", Robot.drivetrain::getLeftTicks);
+    dbc.addNumber("right ticks", Robot.drivetrain::getRightTicks);
+
+    SmartDashboard.putData("test path", new FollowPath(Path.SCALE));
+    SmartDashboard.putData("test jaci", new FollowPath(Path.TEST_JACI));
+    SmartDashboard.putData("test csv reader", new FollowPath(Path.TEST));
+    SmartDashboard.putData("Max speed Kv forward", new CalibrateMaxSpeed(false));
+    SmartDashboard.putData("Max speed Kv Reversed", new CalibrateMaxSpeed(true));  
     SmartDashboard.putData("test kv", new CalibrateKv(false, voltageSupplier));
     SmartDashboard.putData("test ka",
         new CalibrateKa(RobotConstants.Calibration.leftForwardKv, RobotConstants.Calibration.rightForwardKv,
             RobotConstants.Calibration.leftForwardVi, RobotConstants.Calibration.rightForwardVi, false));
-    SmartDashboard.putData("Max speed Kv forward", new CalibrateMaxSpeed(false));
-    SmartDashboard.putData("Max speed Kv Reversed", new CalibrateMaxSpeed(true));
+    Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.45);
+    InstantCommand reset = new InstantCommand(Robot.driveTrain::resetEncoders);
+    reset.setRunWhenDisabled(true);
+    SmartDashboard.putData("reset", reset);
+    
+    Robot.pathCreater = new PathCreater();
     Robot.oi = new OI();
-
-
-    Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
-        new Waypoint(2, -3, 0) // Waypoint @ x=-2, y=-2, exit angle=0 radians
-    };
-
-    Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH,
-        0.02, 3, 2.0, 80.01);
-    Trajectory trajectory = Pathfinder.generate(points, config);
-    Pathfinder.writeToCSV(new File("/home/lvuser/test_path.csv"), trajectory);
-
   }
 
   @Override
