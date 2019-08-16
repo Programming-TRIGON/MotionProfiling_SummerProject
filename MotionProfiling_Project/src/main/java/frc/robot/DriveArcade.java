@@ -8,7 +8,7 @@ public class DriveArcade extends Command {
   private Supplier<Double> x;
 private Supplier<Double> y; 
   public DriveArcade(Supplier<Double> x,Supplier<Double> y) {
-    requires(Robot.driveTrain);
+    requires(Robot.drivetrain);
     this.x = x;
     this.y = y;
   }
@@ -19,7 +19,7 @@ private Supplier<Double> y;
 
   @Override
   protected void execute() {
-    Robot.driveTrain.arcadeDrive(x.get(), y.get());
+    Robot.drivetrain.arcadeDrive(x.get(), y.get());
   }
 
   @Override
@@ -29,7 +29,7 @@ private Supplier<Double> y;
 
   @Override
   protected void end() {
-    Robot.driveTrain.arcadeDrive(0, 0);
+    Robot.drivetrain.arcadeDrive(0, 0);
   }
 
   @Override

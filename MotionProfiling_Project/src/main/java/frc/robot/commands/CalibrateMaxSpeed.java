@@ -22,24 +22,24 @@ public class CalibrateMaxSpeed extends Command {
   @Override
   protected void execute() {
     if(this.isReversed){
-      if(Robot.driveTrain.getRightVelocity() < rightReverseMaxSpeed){
-        rightReverseMaxSpeed = Robot.driveTrain.getRightVelocity();
-        rightReverseAcc = Robot.driveTrain.getRightAcceleration();
+      if(Robot.drivetrain.getRightVelocity() < rightReverseMaxSpeed){
+        rightReverseMaxSpeed = Robot.drivetrain.getRightVelocity();
+        rightReverseAcc = Robot.drivetrain.getRightAcceleration();
 
       }
-      if(Robot.driveTrain.getLeftVelocity() < leftReverseMaxSpeed){
-        leftReverseMaxSpeed = Robot.driveTrain.getLeftVelocity();
-        leftReverseAcc = Robot.driveTrain.getLeftAcceleration();
+      if(Robot.drivetrain.getLeftVelocity() < leftReverseMaxSpeed){
+        leftReverseMaxSpeed = Robot.drivetrain.getLeftVelocity();
+        leftReverseAcc = Robot.drivetrain.getLeftAcceleration();
       }
     }
     else{
-      if(Robot.driveTrain.getRightVelocity() > rightForwardMaxSpeed) {
-        rightForwardMaxSpeed = Robot.driveTrain.getRightVelocity();
-        rightForwardAcc = Robot.driveTrain.getRightAcceleration();
+      if(Robot.drivetrain.getRightVelocity() > rightForwardMaxSpeed) {
+        rightForwardMaxSpeed = Robot.drivetrain.getRightVelocity();
+        rightForwardAcc = Robot.drivetrain.getRightAcceleration();
       }
-      if(Robot.driveTrain.getLeftVelocity() > leftForwardMaxSpeed){
-        leftForwardMaxSpeed = Robot.driveTrain.getLeftVelocity();
-        leftForwardAcc = Robot.driveTrain.getLeftAcceleration();
+      if(Robot.drivetrain.getLeftVelocity() > leftForwardMaxSpeed){
+        leftForwardMaxSpeed = Robot.drivetrain.getLeftVelocity();
+        leftForwardAcc = Robot.drivetrain.getLeftAcceleration();
       }
     }
   }

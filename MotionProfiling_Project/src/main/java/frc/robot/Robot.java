@@ -12,9 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CalibrateKa;
 import frc.robot.commands.CalibrateKv;
 import frc.robot.commands.CalibrateMaxSpeed;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
 import frc.robot.motionprofile.FollowPath;
 import frc.robot.motionprofile.Path;
 import frc.robot.motionprofile.PathCreater;
@@ -27,7 +24,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   public static DashBoardController dbc;
-  public static DriveTrain driveTrain;
+  public static Drivetrain drivetrain;
   public static OI oi;
   public static PathCreater pathCreater;
 
@@ -37,7 +34,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    Robot.driveTrain = new DriveTrain();
+    Robot.drivetrain = new Drivetrain();
 
     Robot.dbc = new DashBoardController();
 
@@ -57,14 +54,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("test csv reader", new FollowPath(Path.TEST));
     SmartDashboard.putData("Max speed Kv forward", new CalibrateMaxSpeed(false));
     SmartDashboard.putData("Max speed Kv Reversed", new CalibrateMaxSpeed(true));  
-    SmartDashboard.putData("test kv", new CalibrateKv(false, voltageSupplier));
     SmartDashboard.putData("test ka",
         new CalibrateKa(RobotConstants.Calibration.leftForwardKv, RobotConstants.Calibration.rightForwardKv,
             RobotConstants.Calibration.leftForwardVi, RobotConstants.Calibration.rightForwardVi, false));
     Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.45);
-    InstantCommand reset = new InstantCommand(Robot.driveTrain::resetEncoders);
+    InstantCommand reset = new InstantCommand(Robot.drivetrain::resetEncoders);
     reset.setRunWhenDisabled(true);
     SmartDashboard.putData("reset", reset);
+    SmartDashboard.putData("test kv", new CalibrateKv(false, voltageSupplier));
     
     Robot.pathCreater = new PathCreater();
     Robot.oi = new OI();

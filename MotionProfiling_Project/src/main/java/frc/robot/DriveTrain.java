@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 /**
  * This is the drive, chassis, subsystem.
  */
-public class DriveTrain extends Subsystem {
+public class Drivetrain extends Subsystem {
 
   private SpeedControllerGroup leftGroup, rightGroup;
   private DifferentialDrive driveTrain;

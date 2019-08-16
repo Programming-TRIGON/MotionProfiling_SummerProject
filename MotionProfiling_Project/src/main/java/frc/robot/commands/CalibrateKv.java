@@ -1,4 +1,3 @@
-
 package frc.robot.commands;
 
 import java.util.function.Supplier;
@@ -27,7 +26,7 @@ public class CalibrateKv extends Command {
    * @param isReversed should the command be run in reversed
    */
   public CalibrateKv(boolean isReversed, Supplier<Double> voltageSupplier) {
-    requires(Robot.driveTrain);
+    requires(Robot.drivetrain);
     this.isReversed = isReversed;
     this.voltageSupplier = voltageSupplier;
     // Creates loggers in order to save the results.
@@ -36,12 +35,12 @@ public class CalibrateKv extends Command {
 
   @Override
   protected void initialize() {
-    Robot.driveTrain.resetEncoders();
+    Robot.drivetrain.resetEncoders();
     // Gets the robot's starting point.
     voltage = voltageSupplier.get();
-    lastRightVel = Math.abs(Robot.driveTrain.getRightVelocity());
-    lastLeftVel = Math.abs(Robot.driveTrain.getLeftVelocity());
-    startingPoint = Robot.driveTrain.getAverageDistance();
+    lastRightVel = Math.abs(Robot.drivetrain.getRightVelocity());
+    lastLeftVel = Math.abs(Robot.drivetrain.getLeftVelocity());
+    startingPoint = Robot.drivetrain.getAverageDistance();
     leftLogger = new Logger((isReversed ? "leftKvReversed" : "leftKv") + ".csv", "voltage", "velocity");
     rightLogger = new Logger((isReversed ? "rightKvReversed" : "rightKv") + ".csv", "voltage", "velocity");
   }
@@ -49,12 +48,12 @@ public class CalibrateKv extends Command {
   @Override
   protected void execute() {
     // Gives voltage to the engines.
-    Robot.driveTrain.arcadeDrive(0, isReversed ? -voltage : voltage);
-    double leftVelocity = Math.abs(Robot.driveTrain.getLeftVelocity());
-    double rightVelocity = Math.abs(Robot.driveTrain.getRightVelocity());
+    Robot.drivetrain.arcadeDrive(0, isReversed ? -voltage : voltage);
+    double leftVelocity = Math.abs(Robot.drivetrain.getLeftVelocity());
+    double rightVelocity = Math.abs(Robot.drivetrain.getRightVelocity());
     // Checks if the accleration is 0 and the velocity has changed since last time.
-    if (Math.abs(Robot.driveTrain.getLeftAcceleration()) < EPSILON_ACC
-        && Math.abs(Robot.driveTrain.getRightAcceleration()) < EPSILON_ACC && rightVelocity - lastRightVel > EPSILON_VEL
+    if (Math.abs(Robot.drivetrain.getLeftAcceleration()) < EPSILON_ACC
+        && Math.abs(Robot.drivetrain.getRightAcceleration()) < EPSILON_ACC && rightVelocity - lastRightVel > EPSILON_VEL
         && leftVelocity - lastLeftVel > EPSILON_VEL) {
       leftLogger.log(voltage, leftVelocity);
       rightLogger.log(voltage, rightVelocity);
@@ -69,13 +68,13 @@ public class CalibrateKv extends Command {
   @Override
   protected boolean isFinished() {
     // Checks if the robot has moved enough.
-    return Math.abs(Robot.driveTrain.getRightDistance() - startingPoint) > MAX_DISTANCE
-        || Math.abs(Robot.driveTrain.getLeftDistance() - startingPoint) > MAX_DISTANCE;
+    return Math.abs(Robot.drivetrain.getRightDistance() - startingPoint) > MAX_DISTANCE
+        || Math.abs(Robot.drivetrain.getLeftDistance() - startingPoint) > MAX_DISTANCE;
   }
 
   @Override
   protected void end() {
-    Robot.driveTrain.tankDrive(0, 0);
+    Robot.drivetrain.tankDrive(0, 0);
     // Saves the data into files.
     leftLogger.close();
     rightLogger.close();
