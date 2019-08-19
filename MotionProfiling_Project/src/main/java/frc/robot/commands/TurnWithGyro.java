@@ -14,15 +14,15 @@ import java.util.function.Supplier;
 
 public class TurnWithGyro extends Command {
     private static final double TOLERANCE = 1;
-    public static final double DELTA_TOLERANCE = 0.0;
-    private Supplier<Double> setpointSupplier;
+    private static final double DELTA_TOLERANCE = 1.0;
     private Target target;
     private PIDController pidController;
+    private PIDSettings pidSettings;
 
     public TurnWithGyro(Target target, PIDSettings pidSettings) {
         requires(Robot.driveTrain);
         this.target = target;
-        pidController = new PIDController(pidSettings.getKP(), pidSettings.getKI(), pidSettings.getKD());
+        this.pidSettings = pidSettings;
     }
 
 
@@ -30,9 +30,8 @@ public class TurnWithGyro extends Command {
     protected void initialize() {
         Robot.limelight.setCamMode(Limelight.CamMode.vision);
         Robot.limelight.setPipeline(target.getValue());
-
+        pidController = new PIDController(pidSettings.getKP(), pidSettings.getKI(), pidSettings.getKD());
         pidController.setAbsoluteTolerance(TOLERANCE, DELTA_TOLERANCE);
-
         pidController.setInputRange(-27, 27);
         pidController.setOutputRange(-1, 1);
         pidController.setSetpoint(Robot.driveTrain.getAngle() + Robot.limelight.getTx());
