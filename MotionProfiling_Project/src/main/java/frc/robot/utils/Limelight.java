@@ -72,6 +72,7 @@ public class Limelight {
         return (getPipeline().height - RobotConstants.RobotDimensions.LIMELIGHT_HEIGHT) /
                 Math.tan(Math.toRadians(RobotConstants.RobotDimensions.LIMELIGHT_ANGLE + getTy()));
     }
+
     /**
      * @return the cam mode in the NetworkTable.
      */
@@ -81,12 +82,14 @@ public class Limelight {
         else
             return CamMode.driver;
     }
+
     /**
      * @param camMode the mode to be changed to.
      */
     public void setCamMode(int camMode) {
         this.camMode.setNumber(camMode);
     }
+
     /**
      * @param camMode the mode to be changed to.
      */
@@ -101,6 +104,7 @@ public class Limelight {
         vision(0), driver(1);
 
         private int value;
+
         CamMode(int value) {
             this.value = value;
         }
@@ -115,6 +119,7 @@ public class Limelight {
         defaultPipeline(0), off(1), blink(2), on(3);
 
         private int value;
+
         LedMode(int value) {
             this.value = value;
         }
@@ -124,8 +129,8 @@ public class Limelight {
         }
 
 
-
     }
+
     /**
      * @return the led mode in the NetworkTable.
      */
@@ -144,6 +149,7 @@ public class Limelight {
     public void setLedMode(LedMode ledMode) {
         this.ledMode.setNumber(ledMode.getValue());
     }
+
     /**
      * @param ledMode the mode to be changed to.
      */
@@ -152,20 +158,24 @@ public class Limelight {
     }
 
     public enum Target {
-        target1(1,0), target2(2,0);
+        target1(1, 0), target2(2, 0);
         private final int value;
         private final double height;
-        Target(int value,double height) {
+
+        Target(int value, double height) {
             this.value = value;
             this.height = height;
         }
+
         public int getValue() {
             return value;
         }
+
         public double getHeight() {
             return height;
         }
     }
+
     /**
      * @return the current pipeline in the NetworkTable.
      */
@@ -177,12 +187,14 @@ public class Limelight {
         }
         return null;
     }
+
     /**
      * @param pipeline pipeline index to be changed to.
      */
     public void setPipeline(int pipeline) {
         this.pipeline.setNumber(pipeline);
     }
+
     /**
      * @param target the target to be changed to.
      */
