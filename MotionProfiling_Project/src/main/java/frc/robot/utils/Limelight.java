@@ -6,9 +6,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.drive.Vector2d;
 import frc.robot.RobotConstants;
 
-import java.util.Vector;
-
 public class Limelight {
+
     private final NetworkTableEntry tv, tx, ty, ta, ts, ledMode, camMode, pipeline;
 
     /**
@@ -22,9 +21,9 @@ public class Limelight {
         ty = limelightTable.getEntry("ty");
         ta = limelightTable.getEntry("ta");
         ts = limelightTable.getEntry("ts");
-        ledMode = limelightTable.getEntry("tv");
-        camMode = limelightTable.getEntry("tv");
-        pipeline = limelightTable.getEntry("tv");
+        ledMode = limelightTable.getEntry("ledMode");
+        camMode = limelightTable.getEntry("camMode");
+        pipeline = limelightTable.getEntry("pipeline");
 
     }
 
@@ -70,9 +69,21 @@ public class Limelight {
     /**
      * @return The distance between the the target and the limelight
      */
-    public double getDistance() {
+    public double getLimelightDistance() {
         return (getTarget().height - RobotConstants.RobotDimensions.LIMELIGHT_HEIGHT) /
                 Math.tan(Math.toRadians(RobotConstants.RobotDimensions.LIMELIGHT_ANGLE + getTy()));
+    }
+
+    /**
+     * @return The distance between the the target and the the middle of the robot
+     */
+    public double getDistance() {
+        return calculateVector().magnitude();
+
+    }
+
+    public double getAngle() {
+        return Math.toDegrees(Math.atan(calculateVector().y / calculateVector().x));
     }
 
     /**
@@ -133,7 +144,7 @@ public class Limelight {
      */
     public LedMode getLedMode() {
         int index = (int) ledMode.getDouble(0);
-        return LedMode.values()[index-1];
+        return LedMode.values()[index - 1];
     }
 
     /**
@@ -174,7 +185,7 @@ public class Limelight {
      */
     public Target getTarget() {
         int index = (int) pipeline.getDouble(0);
-        return Target.values()[index-1];
+        return Target.values()[index - 1];
     }
 
     /**
@@ -190,10 +201,12 @@ public class Limelight {
     public void setPipeline(Target target) {
         setPipeline(target.getIndex());
     }
-//    public double vectorSomething(){
-//        Vector<Double> v = new Vector<>();
-//        v.
-//
-//    }
+
+    private Vector2d calculateVector() {
+        Vector2d MiddleToLimelight = new Vector2d(0, RobotConstants.RobotDimensions.DistanceFromMiddleToLimelight);
+        Vector2d limelightToTarget = new Vector2d(0, getLimelightDistance());
+        limelightToTarget.rotate(-getTx());
+        return new Vector2d(MiddleToLimelight.x + limelightToTarget.x, MiddleToLimelight.y + limelightToTarget.y);
+    }
 }
 

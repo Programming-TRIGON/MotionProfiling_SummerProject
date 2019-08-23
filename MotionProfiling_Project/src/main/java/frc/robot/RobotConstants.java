@@ -13,6 +13,8 @@ public class RobotConstants {
 
     }
     public static class RobotDimensions{
+        //TODO: change values.
+        public static final double DistanceFromMiddleToLimelight = 0;
         public static final double LIMELIGHT_HEIGHT = 0;
         public static final double LIMELIGHT_ANGLE = 0;
     }
