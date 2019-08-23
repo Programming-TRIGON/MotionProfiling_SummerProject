@@ -28,7 +28,7 @@ public class Limelight {
     }
 
     public Limelight() {
-        this("Limelight");
+        this("limelight");
     }
 
     /**

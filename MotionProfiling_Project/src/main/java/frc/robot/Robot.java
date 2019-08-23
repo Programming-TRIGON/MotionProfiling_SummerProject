@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.CalibrateKa;
 import frc.robot.commands.CalibrateKv;
 import frc.robot.commands.CalibrateMaxSpeed;
+import frc.robot.commands.*;
 import frc.robot.utils.Limelight;
+import frc.robot.utils.Limelight.LedMode;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -59,8 +61,11 @@ public class Robot extends TimedRobot {
             RobotConstants.Calibration.leftForwardVi, RobotConstants.Calibration.rightForwardVi, false));
     SmartDashboard.putData("Max speed Kv forward", new CalibrateMaxSpeed(false));
     SmartDashboard.putData("Max speed Kv Reversed", new CalibrateMaxSpeed(true));
+    
     Robot.oi = new OI();
-
+    SmartDashboard.putData("blink",new InstantCommand(()->limelight.setLedMode(LedMode.blink)));
+    SmartDashboard.putData("not blink",new InstantCommand(()->limelight.setLedMode(LedMode.defaultPipeline)));
+    SmartDashboard.putData("find distance", new CalibrateDistance(oi.driveTest::get,25));
 
     Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
         new Waypoint(2, -3, 0) // Waypoint @ x=-2, y=-2, exit angle=0 radians
@@ -76,7 +81,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     Robot.dbc.update();
-
   }
 
   @Override

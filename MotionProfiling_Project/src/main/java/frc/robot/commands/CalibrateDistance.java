@@ -6,11 +6,13 @@ import frc.robot.utils.Logger;
 
 import java.util.function.Supplier;
 
+import javax.lang.model.util.ElementScanner6;
+
 public class CalibrateDistance extends Command {
     private Supplier<Boolean> wantToLog;
-
+    private boolean isPressed = false; 
     private double deltaDistance;
-    private double currentDistance = 20;
+    private double currentDistance = 0;
     private Logger logger;
 
     public CalibrateDistance(Supplier<Boolean> wantToLog, double deltaDistance) {
@@ -20,20 +22,27 @@ public class CalibrateDistance extends Command {
 
     @Override
     protected void initialize() {
-        logger = new Logger("distance calibration", "Distance", "Area Size");
+        logger = new Logger("distance calibration.csv", "Distance", "Area Size");
     }
+
 
     @Override
     protected void execute() {
         if (wantToLog.get()) {
+            if(!isPressed){
+            isPressed = true;
             logger.log(currentDistance, Robot.limelight.getTa());
-            currentDistance -= deltaDistance;
+            currentDistance += deltaDistance;
+            }
         }
+        else
+        isPressed = false;
     }
 
     @Override
     protected boolean isFinished() {
-        return currentDistance < 5;
+        return currentDistance>200;
+
     }
 
     @Override
@@ -46,3 +55,4 @@ public class CalibrateDistance extends Command {
         end();
     }
 }
+
