@@ -3,11 +3,13 @@ package frc.robot.utils;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.drive.Vector2d;
 import frc.robot.RobotConstants;
+
+import java.util.Vector;
 
 public class Limelight {
     private final NetworkTableEntry tv, tx, ty, ta, ts, ledMode, camMode, pipeline;
-    //private final PIDSource source;
 
     /**
      * @param tableKey the key of the limelight - if it was overwritten.
@@ -16,10 +18,10 @@ public class Limelight {
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         NetworkTable limelightTable = inst.getTable(tableKey);
         tv = limelightTable.getEntry("tv");
-        tx = limelightTable.getEntry("tv");
-        ty = limelightTable.getEntry("tv");
-        ta = limelightTable.getEntry("tv");
-        ts = limelightTable.getEntry("tv");
+        tx = limelightTable.getEntry("tx");
+        ty = limelightTable.getEntry("ty");
+        ta = limelightTable.getEntry("ta");
+        ts = limelightTable.getEntry("ts");
         ledMode = limelightTable.getEntry("tv");
         camMode = limelightTable.getEntry("tv");
         pipeline = limelightTable.getEntry("tv");
@@ -27,7 +29,7 @@ public class Limelight {
     }
 
     public Limelight() {
-        this("limelight");
+        this("Limelight");
     }
 
     /**
@@ -124,8 +126,6 @@ public class Limelight {
         public int getValue() {
             return value;
         }
-
-
     }
 
     /**
@@ -152,16 +152,16 @@ public class Limelight {
 
     public enum Target {
         target1(1, 0), target2(2, 0);
-        private final int value;
+        private final int index;
         private final double height;
 
-        Target(int value, double height) {
-            this.value = value;
+        Target(int index, double height) {
+            this.index = index;
             this.height = height;
         }
 
-        public int getValue() {
-            return value;
+        public int getIndex() {
+            return index;
         }
 
         public double getHeight() {
@@ -188,7 +188,12 @@ public class Limelight {
      * @param target the target to be changed to.
      */
     public void setPipeline(Target target) {
-        setPipeline(target.getValue());
+        setPipeline(target.getIndex());
     }
+//    public double vectorSomething(){
+//        Vector<Double> v = new Vector<>();
+//        v.
+//
+//    }
 }
 
