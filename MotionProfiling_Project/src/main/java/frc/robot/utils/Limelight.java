@@ -79,7 +79,6 @@ public class Limelight {
      */
     public double getDistance() {
         return calculateVector().magnitude();
-
     }
 
     public double getAngle() {
