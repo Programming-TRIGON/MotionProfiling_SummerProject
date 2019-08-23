@@ -1,22 +1,30 @@
 package frc.robot;
 
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.commands.DriveArcade;
+import frc.robot.utils.Logger;
 
 public class OI {
     public Joystick driver = new Joystick(0);
     public Button resetEncodersButton;
     public Button driveTest, MaxSpeedStop;
-
+    double currentDistance = 0;
     public OI() {
         this.resetEncodersButton = new JoystickButton(driver, 1);
         this.resetEncodersButton.whenPressed(new InstantCommand(() -> Robot.driveTrain.resetEncoders()));
         driveTest = new JoystickButton(driver, 2);
-        driveTest.whileHeld(new DriveArcade(() -> 0.0, () -> 1.0));
+        //driveTest.whileHeld(new DriveArcade(() -> 0.0, () -> 1.0));
+        // Logger logger = new Logger("distance", "distance","area size");
+        // double deltaDistance = 25;
+        // driveTest.whenPressed(new InstantCommand(()->{
+        //     logger.log(currentDistance, Robot.limelight.getTa());
+        //     currentDistance += deltaDistance;
+        // }));
         //CameraServer.getInstance().startAutomaticCapture(0);
         MaxSpeedStop = new JoystickButton(driver, 3);
     }
