@@ -69,7 +69,7 @@ public class Limelight {
      * @return The distance between the the target and the limelight
      */
     public double getDistance() {
-        return (getPipeline().height - RobotConstants.RobotDimensions.LIMELIGHT_HEIGHT) /
+        return (getTarget().height - RobotConstants.RobotDimensions.LIMELIGHT_HEIGHT) /
                 Math.tan(Math.toRadians(RobotConstants.RobotDimensions.LIMELIGHT_ANGLE + getTy()));
     }
 
@@ -77,10 +77,7 @@ public class Limelight {
      * @return the cam mode in the NetworkTable.
      */
     public CamMode getCamMode() {
-        if (camMode.getDouble(0) == 0)
-            return CamMode.vision;
-        else
-            return CamMode.driver;
+        return camMode.getDouble(0) == 0 ? CamMode.vision : CamMode.driver;
     }
 
     /**
@@ -135,12 +132,8 @@ public class Limelight {
      * @return the led mode in the NetworkTable.
      */
     public LedMode getLedMode() {
-        int activeMode = (int) ledMode.getDouble(0);
-        for (LedMode mode : LedMode.values()) {
-            if (mode.getValue() == activeMode)
-                return mode;
-        }
-        return null;
+        int index = (int) ledMode.getDouble(0);
+        return LedMode.values()[index-1];
     }
 
     /**
@@ -177,15 +170,11 @@ public class Limelight {
     }
 
     /**
-     * @return the current pipeline in the NetworkTable.
+     * @return the current target in the NetworkTable.
      */
-    public Target getPipeline() {
+    public Target getTarget() {
         int index = (int) pipeline.getDouble(0);
-        for (Target t : Target.values()) {
-            if (t.getValue() == index)
-                return t;
-        }
-        return null;
+        return Target.values()[index-1];
     }
 
     /**
