@@ -9,14 +9,14 @@ import frc.robot.Robot;
 import frc.robot.utils.Limelight.CamMode;
 import frc.robot.utils.Limelight.Target;
 
-public class VisionPID extends Command {
+public class VisionYWithVision extends Command {
   private double lastTimeOnTarget, deltaTime;
   private int pipline;
   private PIDController pIDController;
   private double deltaTolerance;
   private PIDSettings pidSettings;
 
-  public VisionPID(PIDSettings pidSettings, double deltaTolarance, Target target, double deltaTime) {
+  public VisionYWithVision(PIDSettings pidSettings, double deltaTolarance, Target target, double deltaTime) {
     requires(Robot.driveTrain);
     this.deltaTolerance = deltaTolarance;
     this.pipline = target.getIndex();
