@@ -15,7 +15,7 @@ public class TurnWithGyro extends Command {
     private PIDSettings pidSettings;
 
     public TurnWithGyro(Target target, PIDSettings pidSettings,double deltaTolerance) {
-        requires(Robot.driveTrain);
+        requires(Robot.drivetrain);
         this.target = target;
         this.pidSettings = pidSettings;
     }
@@ -29,15 +29,15 @@ public class TurnWithGyro extends Command {
         pidController.setAbsoluteTolerance(pidSettings.getTolerance(), DELTA_TOLERANCE);
         pidController.setInputRange(-27, 27);
         pidController.setOutputRange(-1, 1);
-        pidController.setSetpoint(Robot.driveTrain.getAngle() + Robot.limelight.getTx());
+        pidController.setSetpoint(Robot.drivetrain.getAngle() + Robot.limelight.getTx());
         Robot.limelight.setCamMode(Limelight.CamMode.driver);
     }
 
 
     @Override
     protected void execute() {
-        double output = pidController.calculate(Robot.driveTrain.getAngle());
-        Robot.driveTrain.arcadeDrive(output, 0);
+        double output = pidController.calculate(Robot.drivetrain.getAngle());
+        Robot.drivetrain.arcadeDrive(output, 0);
     }
 
 
@@ -49,7 +49,7 @@ public class TurnWithGyro extends Command {
 
     @Override
     protected void end() {
-        Robot.driveTrain.tankDrive(0, 0);
+        Robot.drivetrain.tankDrive(0, 0);
     }
 
 

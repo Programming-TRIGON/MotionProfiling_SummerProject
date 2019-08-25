@@ -17,7 +17,7 @@ public class TurnWithVision extends Command {
   private boolean isFollowingDistance;
 
   public TurnWithVision(PidSettings pidSettingsY, PidSettings pidSettingsX, Target target, double deltaTime) {
-    requires(Robot.driveTrain);
+    requires(Robot.drivetrain);
     this.pipline = target.getIndex();
     this.deltaTime = deltaTime;
     this.pidSettingsY = pidSettingsY;
@@ -25,7 +25,7 @@ public class TurnWithVision extends Command {
   }
 
   public TurnWithVision(PidSettings pidSettingsX, Target target, double deltaTime) {
-    requires(Robot.driveTrain);
+    requires(Robot.drivetrain);
     this.pipline = target.getIndex();
     this.deltaTime = deltaTime;
     this.pidSettingsX = pidSettingsX;
@@ -56,13 +56,13 @@ public class TurnWithVision extends Command {
   protected void execute() {
     // if it sees a target it will do pid on the x axis else it will not move
 //    if (Robot.limelight.getTv()) {
-//      Robot.driveTrain.arcadeDrive(-pIDControllerX.calculate(Robot.limelight.getTx()),
+//      Robot.drivetrain.arcadeDrive(-pIDControllerX.calculate(Robot.limelight.getTx()),
 //          isFollowingDistance ? pIDControllerY.calculate(Robot.limelight.getDistance()) : 0);
 //      lastTimeOnTarget = Timer.getFPGATimestamp();
 //    } else {
-//      Robot.driveTrain.arcadeDrive(0, 0);
+//      Robot.drivetrain.arcadeDrive(0, 0);
     //}
-    Robot.driveTrain.arcadeDrive(pIDControllerX.calculate(Robot.limelight.getTx()),0);
+    Robot.drivetrain.arcadeDrive(pIDControllerX.calculate(Robot.limelight.getTx()),0);
   }
 
   @Override
@@ -75,7 +75,7 @@ public class TurnWithVision extends Command {
 
   @Override
   protected void end() {
-    Robot.driveTrain.arcadeDrive(0, 0);
+    Robot.drivetrain.arcadeDrive(0, 0);
     //Robot.limelight.setCamMode(CamMode.driver);
   }
 

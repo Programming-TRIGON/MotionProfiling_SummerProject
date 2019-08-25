@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
             RobotConstants.Calibration.leftForwardVi, RobotConstants.Calibration.rightForwardVi, false));
     Supplier<Double> voltageSupplier = ConstantHandler.addConstantDouble("voltage start", 0.45);
     dbc.addNumber("distance from target",Robot.limelight::getDistance);
-    InstantCommand reset = new InstantCommand(Robot.driveTrain::resetEncoders);
+    InstantCommand reset = new InstantCommand(Robot.drivetrain::resetEncoders);
     reset.setRunWhenDisabled(true);
     SmartDashboard.putData("reset", reset);
     SmartDashboard.putData("test kv", new CalibrateKv(false, voltageSupplier));
