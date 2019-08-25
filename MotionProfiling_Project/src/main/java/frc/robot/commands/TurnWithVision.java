@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import com.spikes2212.dashboard.ConstantHandler;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.PIDController;
@@ -22,6 +23,8 @@ public class TurnWithVision extends Command {
     this.deltaTime = deltaTime;
     this.pidSettingsY = pidSettingsY;
     this.isFollowingDistance = true;
+
+
   }
 
   public TurnWithVision(PidSettings pidSettingsX, Target target, double deltaTime) {
@@ -30,6 +33,9 @@ public class TurnWithVision extends Command {
     this.deltaTime = deltaTime;
     this.pidSettingsX = pidSettingsX;
     this.isFollowingDistance = false;
+    ConstantHandler.addConstantDouble("p",0.05);
+    ConstantHandler.addConstantDouble("i",0);
+    ConstantHandler.addConstantDouble("d",0.2);
   }
 
   @Override
@@ -39,7 +45,7 @@ public class TurnWithVision extends Command {
     pIDControllerX.setSetpoint(0);
     pIDControllerX.setInputRange(-27, 27);
     pIDControllerX.setOutputRange(-1, 1);
-    pIDControllerX.setAbsoluteTolerance(pidSettingsX.getTolerance(), pidSettingsX.getDeltaTolerance());
+    pIDControllerX.setAbsoluteTolerance(pidSettingsX.getTolerance());
     // setting pidX values
     if (isFollowingDistance) {
       pIDControllerY = new PIDController(pidSettingsY.getKP(), pidSettingsY.getKI(), pidSettingsY.getKD());
@@ -62,15 +68,16 @@ public class TurnWithVision extends Command {
 //    } else {
 //      Robot.drivetrain.arcadeDrive(0, 0);
     //}
-    Robot.drivetrain.arcadeDrive(pIDControllerX.calculate(Robot.limelight.getTx()),0);
+    Robot.drivetrain.arcadeDrive(pIDControllerX.calculate(-Robot.limelight.getTx()),0);
   }
 
   @Override
   protected boolean isFinished() {
     // if it does not detect a target for delta time it will return true
-    return Timer.getFPGATimestamp() - lastTimeOnTarget > deltaTime || isFollowingDistance
-        ? (pIDControllerX.atSetpoint() && pIDControllerY.atSetpoint())
-        : pIDControllerX.atSetpoint();
+//    return Timer.getFPGATimestamp() - lastTimeOnTarget > deltaTime || (isFollowingDistance
+//        ? pIDControllerX.atSetpoint() /*&& pIDControllerY.atSetpoint())*/
+//        : pIDControllerX.atSetpoint());
+    return pIDControllerX.atSetpoint();
   }
 
   @Override

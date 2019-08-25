@@ -45,7 +45,7 @@ public class RobotConstants {
         public static final double LIMELIGHT_DISTANCE_OFFSET = 23.673024888929177;
     }
     public static class PID{
-        public static final PidSettings turn = new PidSettings(0.001,0,0.,1,0,10);
+        public static final PidSettings turn = new PidSettings(0.05,0,0.2,1,0,10);
     }
 
 }
