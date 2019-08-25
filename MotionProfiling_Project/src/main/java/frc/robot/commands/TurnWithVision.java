@@ -12,16 +12,15 @@ import frc.robot.utils.Limelight.Target;
 public class TurnWithVision extends Command {
   private double lastTimeOnTarget, deltaTime;
   private int pipeline;
-  private PIDController pIDControllerY, pIDControllerX;
-  private PidSettings pidSettingsY, pidSettingsX;
+  private PIDController pIDController;
+  private PidSettings pidSettings;
   private boolean isFollowingDistance;
 
-  public TurnWithVision(PidSettings pidSettingsY, PidSettings pidSettingsX, Target target, double deltaTime) {
+  public TurnWithVision(PidSettings pidSettings, Target target, double deltaTime) {
     requires(Robot.drivetrain);
     this.pipeline = target.getIndex();
     this.deltaTime = deltaTime;
-    this.pidSettingsY = pidSettingsY;
-    this.pidSettingsX = pidSettingsX;
+    this.pidSettings = pidSettings;
     this.isFollowingDistance = true;
 
 
