@@ -5,7 +5,7 @@ package frc.robot;
  */
 public class PidSettings {
 
-    double KP, KI, KD, KV, KA, tolerance, waitTime, deltaTolerance, setpoint;
+    double KP, KI, KD, KV, KA, tolerance, waitTime, deltaTolerance;
 
     /**
      * @param KP             The the Proportional coefficient of the PID loop in
@@ -19,23 +19,22 @@ public class PidSettings {
      *                       of the setpoint before ending.
      * @param deltaTolerance The maximum allowable change in error from the previous
      *                       iteration.
-     * @param setpoint       the desiered setpoint.
      */
 
 
-    public PidSettings(double KP, double KI, double KD, double tolerance, double setpoint, double deltaTolerance) {
+    public PidSettings(double KP, double KI, double KD, double tolerance, double deltaTolerance) {
         this.KP = KP;
         this.KI = KI;
         this.KD = KD;
         this.tolerance = tolerance;
-        this.setpoint = setpoint;
         this.deltaTolerance = deltaTolerance;
     }
-    public PidSettings(double KP, double KI, double KD, double tolerance, double waitTime) {
+    public PidSettings(double KP, double KI, double KD, double tolerance,double deltaTolerance, double waitTime) {
         this.KP = KP;
         this.KI = KI;
         this.KD = KD;
         this.tolerance = tolerance;
+        this.deltaTolerance = deltaTolerance;
         this.waitTime = waitTime;}
 
     public PidSettings(double KP, double KD, double KV, double KA) {
@@ -99,14 +98,6 @@ public class PidSettings {
 
     public void setWaitTime(double waitTime) {
         this.waitTime = waitTime;
-    }
-
-    public double getSetpoint(){
-        return this.setpoint;
-    }
-
-    public void setSetpoint(double setpoint){
-        this.setpoint = setpoint;
     }
 
     public double getDeltaTolerance(){

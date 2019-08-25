@@ -5,6 +5,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.drive.Vector2d;
 import frc.robot.RobotConstants;
+import frc.robot.vision.Target;
 
 public class Limelight {
 
@@ -164,24 +165,7 @@ public class Limelight {
         this.ledMode.setNumber(ledMode);
     }
 
-    public enum Target {
-        RocketMiddle(0, 91), target2(1, 0);
-        private final int index;
-        private final double height;
 
-        Target(int index, double height) {
-            this.index = index;
-            this.height = height;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public double getHeight() {
-            return height;
-        }
-    }
 
     /**
      * @return the current target in the NetworkTable.

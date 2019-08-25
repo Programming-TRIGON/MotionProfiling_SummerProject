@@ -43,20 +43,18 @@ public class TurnWithGyro extends Command {
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return pidController.atSetpoint();
     }
 
 
     @Override
     protected void end() {
         Robot.drivetrain.tankDrive(0, 0);
-        System.out.println("ended");
     }
 
 
     @Override
     protected void interrupted() {
         end();
-        System.out.println("interrupted");
     }
 }

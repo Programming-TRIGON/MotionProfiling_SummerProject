@@ -46,5 +46,8 @@ public class RobotConstants {
     }
     public static class PID{
         public static final PidSettings VISION_TURN_PID_SETTINGS = new PidSettings(0.05,0,0.2,1,0,10);
+        //TODO: those values are temporary.
+        public static final PidSettings FOLLOW_TARGET_X = new PidSettings(0,0,0,0,0,0);
+        public static final PidSettings FOLLOW_TARGET_Y = new PidSettings(0,0,0,0,0,0);
     }
 }
