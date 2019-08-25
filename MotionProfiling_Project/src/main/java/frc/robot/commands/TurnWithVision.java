@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import com.spikes2212.dashboard.ConstantHandler;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.PIDController;
 import frc.robot.PidSettings;
@@ -12,16 +11,17 @@ import frc.robot.utils.Limelight.Target;
 
 public class TurnWithVision extends Command {
   private double lastTimeOnTarget, deltaTime;
-  private int pipline;
+  private int pipeline;
   private PIDController pIDControllerY, pIDControllerX;
   private PidSettings pidSettingsY, pidSettingsX;
   private boolean isFollowingDistance;
 
   public TurnWithVision(PidSettings pidSettingsY, PidSettings pidSettingsX, Target target, double deltaTime) {
     requires(Robot.drivetrain);
-    this.pipline = target.getIndex();
+    this.pipeline = target.getIndex();
     this.deltaTime = deltaTime;
     this.pidSettingsY = pidSettingsY;
+    this.pidSettingsX = pidSettingsX;
     this.isFollowingDistance = true;
 
 
@@ -29,13 +29,10 @@ public class TurnWithVision extends Command {
 
   public TurnWithVision(PidSettings pidSettingsX, Target target, double deltaTime) {
     requires(Robot.drivetrain);
-    this.pipline = target.getIndex();
+    this.pipeline = target.getIndex();
     this.deltaTime = deltaTime;
     this.pidSettingsX = pidSettingsX;
     this.isFollowingDistance = false;
-    ConstantHandler.addConstantDouble("p",0.05);
-    ConstantHandler.addConstantDouble("i",0);
-    ConstantHandler.addConstantDouble("d",0.2);
   }
 
   @Override
@@ -54,7 +51,7 @@ public class TurnWithVision extends Command {
       pIDControllerY.setAbsoluteTolerance(pidSettingsY.getTolerance(), pidSettingsY.getDeltaTolerance());
     }
     // setting limelight settings
-    Robot.limelight.setPipeline(pipline);
+    Robot.limelight.setPipeline(pipeline);
     Robot.limelight.setCamMode(CamMode.vision);
   }
 
@@ -62,13 +59,12 @@ public class TurnWithVision extends Command {
   protected void execute() {
     // if it sees a target it will do pid on the x axis else it will not move
 //    if (Robot.limelight.getTv()) {
-//      Robot.drivetrain.arcadeDrive(-pIDControllerX.calculate(Robot.limelight.getTx()),
-//          isFollowingDistance ? pIDControllerY.calculate(Robot.limelight.getDistance()) : 0);
+      Robot.drivetrain.arcadeDrive(-pIDControllerX.calculate(Robot.limelight.getTx()),
+          isFollowingDistance ? pIDControllerY.calculate(Robot.limelight.getDistance()) : 0);
 //      lastTimeOnTarget = Timer.getFPGATimestamp();
 //    } else {
 //      Robot.drivetrain.arcadeDrive(0, 0);
     //}
-    Robot.drivetrain.arcadeDrive(pIDControllerX.calculate(-Robot.limelight.getTx()),0);
   }
 
   @Override
@@ -83,7 +79,6 @@ public class TurnWithVision extends Command {
   @Override
   protected void end() {
     Robot.drivetrain.arcadeDrive(0, 0);
-    //Robot.limelight.setCamMode(CamMode.driver);
   }
 
   @Override
