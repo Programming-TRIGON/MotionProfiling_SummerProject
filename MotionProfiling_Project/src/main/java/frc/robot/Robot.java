@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("blink",blink);
     SmartDashboard.putData("not blink",notBlink);
     SmartDashboard.putData("find distance", findDistance);
-    SmartDashboard.putData("vision",new TurnWithVision(RobotConstants.PID.turn, Limelight.Target.RocketMiddle,0.5));
+    SmartDashboard.putData("vision",new TestPID());
 
     Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
         new Waypoint(2, -3, 0) // Waypoint @ x=-2, y=-2, exit angle=0 radians

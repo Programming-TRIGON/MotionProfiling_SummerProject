@@ -14,25 +14,14 @@ public class PidSettings {
      *                       command.
      * @param KD             The Differential coefficient of the PID loop in this
      *                       command.
-     * @param KV             The voltage divided by speed, for finding the needed
-     *                       voltage for motion profiling.
-     * @param KA             Part of the equation needed for finding the need
-     *                       voltage of the robot.
+
      * @param tolerance      The error tolerance of this command.
-     * @param waitTime       The time this PID loop will wait while within tolerance
      *                       of the setpoint before ending.
      * @param deltaTolerance The maximum allowable change in error from the previous
      *                       iteration.
      * @param setpoint       the desiered setpoint.
      */
-    public PidSettings(double KP, double KI, double KD, double tolerance, double waitTime) {
-        this.KP = KP;
-        this.KI = KI;
-        this.KD = KD;
-        this.tolerance = tolerance;
-        this.waitTime = waitTime;
 
-    }
 
     public PidSettings(double KP, double KI, double KD, double tolerance, double setpoint, double deltaTolerance) {
         this.KP = KP;
@@ -42,6 +31,12 @@ public class PidSettings {
         this.setpoint = setpoint;
         this.deltaTolerance = deltaTolerance;
     }
+    public PidSettings(double KP, double KI, double KD, double tolerance, double waitTime) {
+        this.KP = KP;
+        this.KI = KI;
+        this.KD = KD;
+        this.tolerance = tolerance;
+        this.waitTime = waitTime;}
 
     public PidSettings(double KP, double KD, double KV, double KA) {
         this.KP = KP;

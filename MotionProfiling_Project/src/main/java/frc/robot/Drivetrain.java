@@ -3,11 +3,10 @@ package frc.robot;
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import frc.robot.commands.DriveArcade;
 
 /**
@@ -17,7 +16,7 @@ public class Drivetrain extends Subsystem {
 
   private SpeedControllerGroup leftGroup, rightGroup;
   private DifferentialDrive driveTrain;
-  private ADIS16448_IMU gyro;
+  private ADXRS450_Gyro gyro;
   private Encoder leftEncoder, rightEncoder;
   private double prevTime = 0, leftAcceleration = 0, rightAcceleration = 0,
    prevLeftVelocity = 0, prevRightVelocity = 0;
@@ -29,8 +28,8 @@ public class Drivetrain extends Subsystem {
     this.leftGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_LEFT_MOTOR),
         new WPI_TalonSRX(RobotMap.CAN.FRONT_LEFT_MOTOR));
     this.driveTrain = new DifferentialDrive(this.leftGroup, this.rightGroup);
-    // this.gyro = new ADXRS450_Gyro();
-    this.gyro = new ADIS16448_IMU();
+     this.gyro = new ADXRS450_Gyro();
+
     this.leftEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_A,
         RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_B);
     this.rightEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_RIGHT_ENCODER_CHANNEL_A,
@@ -53,7 +52,7 @@ public class Drivetrain extends Subsystem {
   }
 
   public double getAngle() {
-    return this.gyro.getAngleZ();
+    return this.gyro.getAngle();
   }
 
   public double getLeftDistance() {
