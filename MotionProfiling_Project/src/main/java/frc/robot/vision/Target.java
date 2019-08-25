@@ -1,7 +1,7 @@
 package frc.robot.vision;
 
 public enum Target {
-    RocketMiddle(0, 91, 10), target2(1, 0, 0);
+    RocketMiddle(0, 91, 0), target2(1, 0, 0);
     private final int index;
     private final double height;
     private final double setpoint;

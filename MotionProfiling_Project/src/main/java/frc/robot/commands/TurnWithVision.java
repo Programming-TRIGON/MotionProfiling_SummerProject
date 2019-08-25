@@ -15,14 +15,14 @@ public class TurnWithVision extends Command {
   private PIDController pIDController;
   private PidSettings pidSettings;
 
-  public TurnWithVision(PidSettings pidSettings, Target target) {
+  public TurnWithVision(Target target, PidSettings pidSettings) {
     requires(Robot.drivetrain);
     this.target = target;
     this.pidSettings = pidSettings;
   }
 
   public TurnWithVision(Target target) {
-    this(RobotConstants.PID.VISION_TURN_PID_SETTINGS, target);
+    this(target, RobotConstants.PID.VISION_TURN_PID_SETTINGS);
   }
 
   @Override
@@ -30,7 +30,6 @@ public class TurnWithVision extends Command {
     // setting pid values
     pIDController = new PIDController(pidSettings.getKP(), pidSettings.getKI(), pidSettings.getKD());
     pIDController.setSetpoint(target.getSetpoint());
-    pIDController.setInputRange(-27, 27);
     pIDController.setOutputRange(-1, 1);
     pIDController.setAbsoluteTolerance(pidSettings.getTolerance(), pidSettings.getDeltaTolerance());
     // setting limelight settings
@@ -40,6 +39,7 @@ public class TurnWithVision extends Command {
 
   @Override
   protected void execute() {
+    System.out.println(Robot.limelight.getTx());
     if(Robot.limelight.getTv()) {
       Robot.drivetrain.arcadeDrive(pIDController.calculate(-Robot.limelight.getTx()), 0);
       lastTimeOnTarget = Timer.getFPGATimestamp(); 
