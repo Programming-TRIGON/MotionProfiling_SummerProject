@@ -6,7 +6,7 @@ import frc.robot.PIDController;
 import frc.robot.PidSettings;
 import frc.robot.Robot;
 import frc.robot.utils.Limelight;
-import frc.robot.utils.Limelight.Target;
+import frc.robot.vision.Target;
 
 
 public class TurnWithGyro extends Command {
