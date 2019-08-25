@@ -34,7 +34,6 @@ public class FollowTarget extends Command {
         this(target, RobotConstants.PID.FOLLOW_TARGET_Y, RobotConstants.PID.FOLLOW_TARGET_X);
     }
 
-
     @Override
     protected void initialize() {
         // setting PID X values
@@ -58,7 +57,7 @@ public class FollowTarget extends Command {
         // if it sees a target it will do PID on the x axis else it will not move
         if (Robot.limelight.getTv()) {
             Robot.drivetrain.arcadeDrive(-pidControllerX.calculate(Robot.limelight.getTx()),
-                    pidControllerY.calculate(Robot.limelight.getDistance()));
+                    -pidControllerY.calculate(Robot.limelight.getDistance()));
             lastTimeOnTarget = Timer.getFPGATimestamp();
         } else {
             //the target hasn't been found.

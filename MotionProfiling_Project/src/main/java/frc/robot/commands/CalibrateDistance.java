@@ -21,7 +21,7 @@ public class CalibrateDistance extends Command {
 
     @Override
     protected void initialize() {
-        logger = new Logger("distance calibration.csv", "Distance", "Area Size");
+        logger = new Logger("distance calibration.csv", "height", "Distance");
     }
 
 
@@ -30,7 +30,7 @@ public class CalibrateDistance extends Command {
         if (wantToLog.get()) {
             if(!isPressed){
             isPressed = true;
-            logger.log(currentDistance, Robot.limelight.getTa());
+            logger.log(Robot.limelight.getHeight(), currentDistance);
             currentDistance += deltaDistance;
             }
         }

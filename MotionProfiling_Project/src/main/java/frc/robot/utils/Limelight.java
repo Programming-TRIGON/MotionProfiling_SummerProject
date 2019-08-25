@@ -74,9 +74,9 @@ public class Limelight {
 //        return (getTarget().height - RobotConstants.RobotDimensions.LIMELIGHT_HEIGHT) /
 //                Math.tan(Math.toRadians(RobotConstants.RobotDimensions.LIMELIGHT_ANGLE + getTy()));
 //    }
-    public double getDistance(){
+    public double getDistance() {
         double x = getTa();
-        return -36.88*Math.log(x)+124.53/*+ RobotConstants.RobotDimensions.LIMELIGHT_DISTANCE_OFFSET-10.6*/;
+        return -36.88 * Math.log(x) + 124.53/*+ RobotConstants.RobotDimensions.LIMELIGHT_DISTANCE_OFFSET-10.6*/;
     }
 
     /**
@@ -85,9 +85,12 @@ public class Limelight {
 //    public double getDistance() {
 //        return calculateVector().magnitude();
 //    }
-
     public double getAngle() {
         return Math.toDegrees(Math.atan(calculateVector().y / calculateVector().x));
+    }
+
+    public double getHeight() {
+        return getTy() / 20.5;
     }
 
     /**
@@ -164,7 +167,6 @@ public class Limelight {
     public void setLedMode(int ledMode) {
         this.ledMode.setNumber(ledMode);
     }
-
 
 
     /**
