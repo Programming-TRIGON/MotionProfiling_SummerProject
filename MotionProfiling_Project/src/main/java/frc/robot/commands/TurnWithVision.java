@@ -1,6 +1,6 @@
 package frc.robot.commands;
 
-import com.spikes2212.dashboard.ConstantHandler;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.PIDController;
 import frc.robot.PidSettings;
@@ -10,45 +10,29 @@ import frc.robot.utils.Limelight.CamMode;
 import frc.robot.utils.Limelight.Target;
 
 public class TurnWithVision extends Command {
-  private double lastTimeOnTarget, deltaTime;
+  private double lastTimeOnTarget;
   private int pipeline;
   private PIDController pIDController;
   private PidSettings pidSettings;
-  private boolean isFollowingDistance;
 
-  public TurnWithVision(PidSettings pidSettings, Target target, double deltaTime) {
+  public TurnWithVision(PidSettings pidSettings, Target target) {
     requires(Robot.drivetrain);
     this.pipeline = target.getIndex();
-    this.deltaTime = deltaTime;
     this.pidSettings = pidSettings;
-    this.isFollowingDistance = true;
-
-
   }
 
-  public TurnWithVision(PidSettings pidSettingsX, Target target, double deltaTime) {
-    requires(Robot.drivetrain);
-    this.pipeline = target.getIndex();
-    this.deltaTime = deltaTime;
-    this.pidSettingsX = pidSettingsX;
-    this.isFollowingDistance = false;
+  public TurnWithVision(Target target) {
+    this(RobotConstants.PID.VISION_TURN_PID_SETTINGS, target);
   }
 
   @Override
   protected void initialize() {
-    // setting pidY values
-    pIDControllerX = new PIDController(pidSettingsX.getKP(), pidSettingsX.getKI(), pidSettingsX.getKD());
-    pIDControllerX.setSetpoint(0);
-    pIDControllerX.setInputRange(-27, 27);
-    pIDControllerX.setOutputRange(-1, 1);
-    pIDControllerX.setAbsoluteTolerance(pidSettingsX.getTolerance());
-    // setting pidX values
-    if (isFollowingDistance) {
-      pIDControllerY = new PIDController(pidSettingsY.getKP(), pidSettingsY.getKI(), pidSettingsY.getKD());
-      pIDControllerY.setSetpoint(RobotConstants.RobotDimensions.LIMELIGHT_DISTANCE_OFFSET + pidSettingsY.getSetpoint());
-      pIDControllerY.setOutputRange(-1, 1);
-      pIDControllerY.setAbsoluteTolerance(pidSettingsY.getTolerance(), pidSettingsY.getDeltaTolerance());
-    }
+    // setting pid values
+    pIDController = new PIDController(pidSettings.getKP(), pidSettings.getKI(), pidSettings.getKD());
+    pIDController.setSetpoint(0);
+    pIDController.setInputRange(-27, 27);
+    pIDController.setOutputRange(-1, 1);
+    pIDController.setAbsoluteTolerance(pidSettings.getTolerance(), pidSettings.getDeltaTolerance());
     // setting limelight settings
     Robot.limelight.setPipeline(pipeline);
     Robot.limelight.setCamMode(CamMode.vision);
@@ -56,23 +40,17 @@ public class TurnWithVision extends Command {
 
   @Override
   protected void execute() {
-    // if it sees a target it will do pid on the x axis else it will not move
-//    if (Robot.limelight.getTv()) {
-      Robot.drivetrain.arcadeDrive(-pIDControllerX.calculate(Robot.limelight.getTx()),
-          isFollowingDistance ? pIDControllerY.calculate(Robot.limelight.getDistance()) : 0);
-//      lastTimeOnTarget = Timer.getFPGATimestamp();
-//    } else {
-//      Robot.drivetrain.arcadeDrive(0, 0);
-    //}
+    if(Robot.limelight.getTv()) {
+      Robot.drivetrain.arcadeDrive(pIDController.calculate(-Robot.limelight.getTx()), 0);
+      lastTimeOnTarget = Timer.getFPGATimestamp(); 
+    } else 
+      Robot.drivetrain.arcadeDrive(0, 0);
   }
 
-  @Override
   protected boolean isFinished() {
-    // if it does not detect a target for delta time it will return true
-//    return Timer.getFPGATimestamp() - lastTimeOnTarget > deltaTime || (isFollowingDistance
-//        ? pIDControllerX.atSetpoint() /*&& pIDControllerY.atSetpoint())*/
-//        : pIDControllerX.atSetpoint());
-    return pIDControllerX.atSetpoint();
+    //if it does not detect a target for delta time it will return true
+    return Timer.getFPGATimestamp() - lastTimeOnTarget >= pidSettings.getWaitTime() || pIDController.atSetpoint();
+
   }
 
   @Override
