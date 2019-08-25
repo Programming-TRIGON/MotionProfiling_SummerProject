@@ -108,7 +108,7 @@ public class PidSettings {
 
     public double getSetpoint(){
         return this.setpoint;
-    } 
+    }
 
     public void setSetpoint(double setpoint){
         this.setpoint = setpoint;
@@ -117,7 +117,7 @@ public class PidSettings {
     public double getDeltaTolerance(){
         return this.deltaTolerance;
     }
-    
+
     public void setDeltaTolerance(double deltaTolerance){
         this.deltaTolerance = deltaTolerance;
     }

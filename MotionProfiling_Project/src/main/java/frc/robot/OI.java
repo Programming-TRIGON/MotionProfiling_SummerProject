@@ -18,7 +18,7 @@ public class OI {
     double currentDistance = 0;
     public OI() {
         this.resetEncodersButton = new JoystickButton(driver, 1);
-        this.resetEncodersButton.whenPressed(new InstantCommand(() -> Robot.driveTrain.resetEncoders()));
+        this.resetEncodersButton.whenPressed(new InstantCommand(() -> Robot.drivetrain.resetEncoders()));
         driveTest = new JoystickButton(driver, 2);
         //driveTest.whileHeld(new DriveArcade(() -> 0.0, () -> 1.0));
         vision = new JoystickButton(driver,3);
