@@ -29,7 +29,7 @@ public class TurnWithVision extends Command {
   protected void initialize() {
     // setting pid values
     pIDController = new PIDController(pidSettings.getKP(), pidSettings.getKI(), pidSettings.getKD());
-    pIDController.setSetpoint(0);
+    pIDController.setSetpoint(target.getSetpoint());
     pIDController.setInputRange(-27, 27);
     pIDController.setOutputRange(-1, 1);
     pIDController.setAbsoluteTolerance(pidSettings.getTolerance(), pidSettings.getDeltaTolerance());
