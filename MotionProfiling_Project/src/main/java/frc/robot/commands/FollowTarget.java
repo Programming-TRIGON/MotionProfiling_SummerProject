@@ -39,13 +39,14 @@ public class FollowTarget extends Command {
         // setting PID X values
         pidControllerX = new PIDController(pidSettingsX.getKP(), pidSettingsX.getKI(), pidSettingsX.getKD());
         pidControllerX.setSetpoint(0);
-        pidControllerX.setInputRange(-27, 27);
-        pidControllerX.setOutputRange(-1, 1);
+        //pidControllerX.setInputRange(-27, 27);
+        pidControllerX.setOutputRange(1, -1);
         pidControllerX.setAbsoluteTolerance(pidSettingsX.getTolerance(), pidSettingsX.getDeltaTolerance());
         // setting PID Y values
         pidControllerY = new PIDController(pidSettingsY.getKP(), pidSettingsY.getKI(), pidSettingsY.getKD());
-        pidControllerY.setSetpoint(target.getSetpoint());
-        pidControllerY.setOutputRange(-1, 1);
+        //pidControllerY.setSetpoint(target.getSetpoint());
+        pidControllerY.setSetpoint(0);
+        pidControllerY.setOutputRange(1, -1);
         pidControllerY.setAbsoluteTolerance(pidSettingsY.getTolerance(), pidSettingsY.getDeltaTolerance());
         // setting limelight settings
         Robot.limelight.setPipeline(target.getIndex());
@@ -54,10 +55,12 @@ public class FollowTarget extends Command {
 
     @Override
     protected void execute() {
-        // if it sees a target it will do PID on the x axis else it will not move
+        // if it sees a target it will do PID on the x axis else it won't move
         if (Robot.limelight.getTv()) {
-            Robot.drivetrain.arcadeDrive(-pidControllerX.calculate(Robot.limelight.getTx()),
-                    -pidControllerY.calculate(Robot.limelight.getDistance()));
+            // Robot.drivetrain.arcadeDrive(pidControllerX.calculate(Robot.limelight.getTx()),
+            //        pidControllerY.calculate(Robot.limelight.getDistance()));
+            Robot.drivetrain.arcadeDrive(Robot.limelight.getTx()*pidSettingsX.getKP(),
+                Robot.limelight.getDistance()*pidSettingsY.getKP());
             lastTimeOnTarget = Timer.getFPGATimestamp();
         } else {
             //the target hasn't been found.

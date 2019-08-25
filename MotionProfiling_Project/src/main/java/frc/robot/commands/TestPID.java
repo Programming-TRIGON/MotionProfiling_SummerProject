@@ -5,9 +5,7 @@ import com.spikes2212.dashboard.ConstantHandler;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.PidSettings;
-import frc.robot.RobotConstants;
 import frc.robot.vision.Target;
-
 
 public class TestPID extends Command {
   private Supplier<Double> KP = ConstantHandler.addConstantDouble("KP", 0.01);
@@ -15,13 +13,11 @@ public class TestPID extends Command {
   private Supplier<Double> KD = ConstantHandler.addConstantDouble("KD", 0);
   private Supplier<Double> TOLERANCE = ConstantHandler.addConstantDouble("tolerance", 1);
   private Supplier<Double> DELTA_TOLERANCE = ConstantHandler.addConstantDouble("delta tolerance", 1);
-  private Supplier<Double> Setpoint = ConstantHandler.addConstantDouble("Setpoint", 0);
   private Supplier<Double> KP2 = ConstantHandler.addConstantDouble("KP2", 0.01);
   private Supplier<Double> KI2 = ConstantHandler.addConstantDouble("KI2", 0);
   private Supplier<Double> KD2 = ConstantHandler.addConstantDouble("KD2", 0);
   private Supplier<Double> TOLERANCE2 = ConstantHandler.addConstantDouble("tolerance2", 1);
   private Supplier<Double> DELTA_TOLERANCE2 = ConstantHandler.addConstantDouble("delta tolerance2", 1);
-
 
   private PidSettings pidSettings;
   private PidSettings pidSettings2;
@@ -33,7 +29,7 @@ public class TestPID extends Command {
   @Override
   protected void initialize() {
     updatePID();
-    testCommand = new FollowTarget(Target.RocketMiddle,pidSettings, pidSettings2);
+    testCommand = new FollowTarget(Target.RocketMiddle, pidSettings, pidSettings2);
     testCommand.start();
   }
 
