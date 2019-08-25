@@ -7,12 +7,11 @@ import frc.robot.PidSettings;
 import frc.robot.Robot;
 import frc.robot.RobotConstants;
 import frc.robot.utils.Limelight.CamMode;
-import frc.robot.utils.Limelight.Target;
 import frc.robot.vision.Target;
 
 public class FollowTargetWithVision extends Command {
     private double lastTimeOnTarget;
-    private int pipeline;
+    private Target target;
     private PIDController pIDControllerY, pidController;
     private PidSettings pidSettingsY, pidSettingsX;
 
@@ -23,7 +22,7 @@ public class FollowTargetWithVision extends Command {
      */
     public FollowTargetWithVision(Target target, PidSettings pidSettingsY, PidSettings pidSettingsX) {
         requires(Robot.drivetrain);
-        this.pipeline = target.getIndex();
+        this.target = target;
         this.pidSettingsY = pidSettingsY;
         this.pidSettingsX = pidSettingsX;
     }
@@ -42,11 +41,11 @@ public class FollowTargetWithVision extends Command {
         pidController.setAbsoluteTolerance(pidSettingsX.getTolerance(), pidSettingsX.getDeltaTolerance());
         // setting PID Y values
         pIDControllerY = new PIDController(pidSettingsY.getKP(), pidSettingsY.getKI(), pidSettingsY.getKD());
-        pIDControllerY.setSetpoint();
+        pIDControllerY.setSetpoint(target.getSetpoint());
         pIDControllerY.setOutputRange(-1, 1);
         pIDControllerY.setAbsoluteTolerance(pidSettingsY.getTolerance(), pidSettingsY.getDeltaTolerance());
         // setting limelight settings
-        Robot.limelight.setPipeline(pipeline);
+        Robot.limelight.setPipeline(target.getIndex());
         Robot.limelight.setCamMode(CamMode.vision);
     }
 

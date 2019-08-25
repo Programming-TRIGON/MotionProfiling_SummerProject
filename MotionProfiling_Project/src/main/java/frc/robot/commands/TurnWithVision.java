@@ -7,7 +7,7 @@ import frc.robot.PidSettings;
 import frc.robot.Robot;
 import frc.robot.RobotConstants;
 import frc.robot.utils.Limelight.CamMode;
-import frc.robot.utils.Limelight.Target;
+import frc.robot.vision.Target;
 
 public class TurnWithVision extends Command {
   private double lastTimeOnTarget;

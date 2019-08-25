@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.PidSettings;
 import frc.robot.utils.Limelight;
+import frc.robot.vision.Target;
 
 
 public class TestPID extends Command {
@@ -25,7 +26,7 @@ public class TestPID extends Command {
   @Override
   protected void initialize() {
     updatePID();
-    testCommand = new TurnWithGyro(Limelight.Target.RocketMiddle,pidSettings);
+    testCommand = new TurnWithGyro(Target.RocketMiddle,pidSettings);
     testCommand.start();
   }
 
