@@ -11,13 +11,13 @@ import frc.robot.vision.Target;
 
 public class TurnWithVision extends Command {
   private double lastTimeOnTarget;
-  private int pipeline;
+  private Target target;
   private PIDController pIDController;
   private PidSettings pidSettings;
 
   public TurnWithVision(PidSettings pidSettings, Target target) {
     requires(Robot.drivetrain);
-    this.pipeline = target.getIndex();
+    this.target = target;
     this.pidSettings = pidSettings;
   }
 
@@ -34,7 +34,7 @@ public class TurnWithVision extends Command {
     pIDController.setOutputRange(-1, 1);
     pIDController.setAbsoluteTolerance(pidSettings.getTolerance(), pidSettings.getDeltaTolerance());
     // setting limelight settings
-    Robot.limelight.setPipeline(pipeline);
+    Robot.limelight.setPipeline(target.getIndex());
     Robot.limelight.setCamMode(CamMode.vision);
   }
 
