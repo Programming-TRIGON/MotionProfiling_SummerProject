@@ -9,10 +9,10 @@ import frc.robot.RobotConstants;
 import frc.robot.utils.Limelight.CamMode;
 import frc.robot.vision.Target;
 
-public class FollowTargetWithVision extends Command {
+public class FollowTarget extends Command {
     private double lastTimeOnTarget;
     private Target target;
-    private PIDController pIDControllerY, pidController;
+    private PIDController pidControllerY, pidControllerX;
     private PidSettings pidSettingsY, pidSettingsX;
 
     /**
@@ -20,30 +20,34 @@ public class FollowTargetWithVision extends Command {
      * @param pidSettingsY PID settings for the distance
      * @param pidSettingsX PID settings for the rotation
      */
-    public FollowTargetWithVision(Target target, PidSettings pidSettingsY, PidSettings pidSettingsX) {
+    public FollowTarget(Target target, PidSettings pidSettingsY, PidSettings pidSettingsX) {
         requires(Robot.drivetrain);
         this.target = target;
         this.pidSettingsY = pidSettingsY;
         this.pidSettingsX = pidSettingsX;
     }
-    public FollowTargetWithVision(Target target){
-      this(target, RobotConstants.PID.FOLLOW_TARGET_Y,RobotConstants.PID.FOLLOW_TARGET_X);
+
+    /**
+     * @param target The target to follow.
+     */
+    public FollowTarget(Target target) {
+        this(target, RobotConstants.PID.FOLLOW_TARGET_Y, RobotConstants.PID.FOLLOW_TARGET_X);
     }
 
 
     @Override
     protected void initialize() {
         // setting PID X values
-        pidController = new PIDController(pidSettingsX.getKP(), pidSettingsX.getKI(), pidSettingsX.getKD());
-        pidController.setSetpoint(0);
-        pidController.setInputRange(-27, 27);
-        pidController.setOutputRange(-1, 1);
-        pidController.setAbsoluteTolerance(pidSettingsX.getTolerance(), pidSettingsX.getDeltaTolerance());
+        pidControllerX = new PIDController(pidSettingsX.getKP(), pidSettingsX.getKI(), pidSettingsX.getKD());
+        pidControllerX.setSetpoint(0);
+        pidControllerX.setInputRange(-27, 27);
+        pidControllerX.setOutputRange(-1, 1);
+        pidControllerX.setAbsoluteTolerance(pidSettingsX.getTolerance(), pidSettingsX.getDeltaTolerance());
         // setting PID Y values
-        pIDControllerY = new PIDController(pidSettingsY.getKP(), pidSettingsY.getKI(), pidSettingsY.getKD());
-        pIDControllerY.setSetpoint(target.getSetpoint());
-        pIDControllerY.setOutputRange(-1, 1);
-        pIDControllerY.setAbsoluteTolerance(pidSettingsY.getTolerance(), pidSettingsY.getDeltaTolerance());
+        pidControllerY = new PIDController(pidSettingsY.getKP(), pidSettingsY.getKI(), pidSettingsY.getKD());
+        pidControllerY.setSetpoint(target.getSetpoint());
+        pidControllerY.setOutputRange(-1, 1);
+        pidControllerY.setAbsoluteTolerance(pidSettingsY.getTolerance(), pidSettingsY.getDeltaTolerance());
         // setting limelight settings
         Robot.limelight.setPipeline(target.getIndex());
         Robot.limelight.setCamMode(CamMode.vision);
@@ -53,8 +57,8 @@ public class FollowTargetWithVision extends Command {
     protected void execute() {
         // if it sees a target it will do PID on the x axis else it will not move
         if (Robot.limelight.getTv()) {
-            Robot.drivetrain.arcadeDrive(-pidController.calculate(Robot.limelight.getTx()),
-                    pIDControllerY.calculate(Robot.limelight.getDistance()));
+            Robot.drivetrain.arcadeDrive(-pidControllerX.calculate(Robot.limelight.getTx()),
+                    pidControllerY.calculate(Robot.limelight.getDistance()));
             lastTimeOnTarget = Timer.getFPGATimestamp();
         } else {
             //the target hasn't been found.
@@ -65,7 +69,7 @@ public class FollowTargetWithVision extends Command {
     @Override
     protected boolean isFinished() {
         // if it does not detect a target for enough time it will return true
-        return Timer.getFPGATimestamp() - lastTimeOnTarget > pidSettingsX.getWaitTime() || (pidController.atSetpoint() && pIDControllerY.atSetpoint());
+        return Timer.getFPGATimestamp() - lastTimeOnTarget > pidSettingsX.getWaitTime() || (pidControllerX.atSetpoint() && pidControllerY.atSetpoint());
     }
 
     @Override

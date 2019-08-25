@@ -31,6 +31,7 @@ public class TurnWithVision extends Command {
     pIDController = new PIDController(pidSettings.getKP(), pidSettings.getKI(), pidSettings.getKD());
     pIDController.setSetpoint(target.getSetpoint());
     pIDController.setOutputRange(-1, 1);
+
     pIDController.setAbsoluteTolerance(pidSettings.getTolerance(), pidSettings.getDeltaTolerance());
     // setting limelight settings
     Robot.limelight.setPipeline(target.getIndex());
