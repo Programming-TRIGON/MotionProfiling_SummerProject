@@ -7,6 +7,7 @@ import com.spikes2212.dashboard.ConstantHandler;
 import com.spikes2212.dashboard.DashBoardController;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -52,6 +53,7 @@ public class Robot extends TimedRobot {
     dbc.addNumber("Left velocity", Robot.driveTrain::getLeftVelocity);
     dbc.addNumber("Right acceleration", Robot.driveTrain::getRightAcceleration);
     dbc.addNumber("left acceleration", Robot.driveTrain::getLeftAcceleration);
+    dbc.addNumber("distance from target",Robot.limelight::getDistance);
     InstantCommand reset = new InstantCommand(Robot.driveTrain::resetEncoders);
     reset.setRunWhenDisabled(true);
     SmartDashboard.putData("reset", reset);
@@ -63,9 +65,17 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Max speed Kv Reversed", new CalibrateMaxSpeed(true));
     
     Robot.oi = new OI();
-    SmartDashboard.putData("blink",new InstantCommand(()->limelight.setLedMode(LedMode.blink)));
-    SmartDashboard.putData("not blink",new InstantCommand(()->limelight.setLedMode(LedMode.defaultPipeline)));
-    SmartDashboard.putData("find distance", new CalibrateDistance(oi.driveTest::get,25));
+    Command blink,notBlink,findDistance;
+    blink = new InstantCommand(()->limelight.setLedMode(LedMode.blink));
+    blink.setRunWhenDisabled(true);
+    notBlink = new InstantCommand(()->limelight.setLedMode(LedMode.defaultPipeline));
+    notBlink.setRunWhenDisabled(true);
+    findDistance = new CalibrateDistance(oi.driveTest::get,15);
+    findDistance.setRunWhenDisabled(true);
+    SmartDashboard.putData("blink",blink);
+    SmartDashboard.putData("not blink",notBlink);
+    SmartDashboard.putData("find distance", findDistance);
+    SmartDashboard.putData("vision",new TurnWithVision(RobotConstants.PID.turn, Limelight.Target.RocketMiddle,0.5));
 
     Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
         new Waypoint(2, -3, 0) // Waypoint @ x=-2, y=-2, exit angle=0 radians

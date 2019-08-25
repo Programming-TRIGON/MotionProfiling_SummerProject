@@ -6,7 +6,6 @@ import frc.robot.utils.Logger;
 
 import java.util.function.Supplier;
 
-import javax.lang.model.util.ElementScanner6;
 
 public class CalibrateDistance extends Command {
     private Supplier<Boolean> wantToLog;
@@ -41,18 +40,20 @@ public class CalibrateDistance extends Command {
 
     @Override
     protected boolean isFinished() {
-        return currentDistance>200;
+        return currentDistance > deltaDistance*6;
 
     }
 
     @Override
     protected void end() {
         logger.close();
+
     }
 
     @Override
     protected void interrupted() {
         end();
+
     }
 }
 

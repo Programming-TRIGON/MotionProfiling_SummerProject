@@ -9,14 +9,14 @@ import frc.robot.RobotConstants;
 import frc.robot.utils.Limelight.CamMode;
 import frc.robot.utils.Limelight.Target;
 
-public class VisionWithVision extends Command {
+public class TurnWithVision extends Command {
   private double lastTimeOnTarget, deltaTime;
   private int pipline;
   private PIDController pIDControllerY, pIDControllerX;
   private PidSettings pidSettingsY, pidSettingsX;
   private boolean isFollowingDistance;
 
-  public VisionWithVision(PidSettings pidSettingsY, PidSettings pidSettingsX, Target target, double deltaTime) {
+  public TurnWithVision(PidSettings pidSettingsY, PidSettings pidSettingsX, Target target, double deltaTime) {
     requires(Robot.driveTrain);
     this.pipline = target.getIndex();
     this.deltaTime = deltaTime;
@@ -24,7 +24,7 @@ public class VisionWithVision extends Command {
     this.isFollowingDistance = true;
   }
 
-  public VisionWithVision(PidSettings pidSettingsX, Target target, double deltaTime) {
+  public TurnWithVision(PidSettings pidSettingsX, Target target, double deltaTime) {
     requires(Robot.driveTrain);
     this.pipline = target.getIndex();
     this.deltaTime = deltaTime;
@@ -55,13 +55,14 @@ public class VisionWithVision extends Command {
   @Override
   protected void execute() {
     // if it sees a target it will do pid on the x axis else it will not move
-    if (Robot.limelight.getTv()) {
-      Robot.driveTrain.arcadeDrive(pIDControllerX.calculate(Robot.limelight.getTx()),
-          isFollowingDistance ? pIDControllerY.calculate(Robot.limelight.getDistance()) : 0);
-      lastTimeOnTarget = Timer.getFPGATimestamp();
-    } else {
-      Robot.driveTrain.arcadeDrive(0, 0);
-    }
+//    if (Robot.limelight.getTv()) {
+//      Robot.driveTrain.arcadeDrive(-pIDControllerX.calculate(Robot.limelight.getTx()),
+//          isFollowingDistance ? pIDControllerY.calculate(Robot.limelight.getDistance()) : 0);
+//      lastTimeOnTarget = Timer.getFPGATimestamp();
+//    } else {
+//      Robot.driveTrain.arcadeDrive(0, 0);
+    //}
+    Robot.driveTrain.arcadeDrive(pIDControllerX.calculate(Robot.limelight.getTx()),0);
   }
 
   @Override
@@ -75,7 +76,7 @@ public class VisionWithVision extends Command {
   @Override
   protected void end() {
     Robot.driveTrain.arcadeDrive(0, 0);
-    Robot.limelight.setCamMode(CamMode.driver);
+    //Robot.limelight.setCamMode(CamMode.driver);
   }
 
   @Override

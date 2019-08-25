@@ -69,17 +69,21 @@ public class Limelight {
     /**
      * @return The distance between the the target and the limelight
      */
-    public double getLimelightDistance() {
-        return (getTarget().height - RobotConstants.RobotDimensions.LIMELIGHT_HEIGHT) /
-                Math.tan(Math.toRadians(RobotConstants.RobotDimensions.LIMELIGHT_ANGLE + getTy()));
+//    public double getDistance() {
+//        return (getTarget().height - RobotConstants.RobotDimensions.LIMELIGHT_HEIGHT) /
+//                Math.tan(Math.toRadians(RobotConstants.RobotDimensions.LIMELIGHT_ANGLE + getTy()));
+//    }
+    public double getDistance(){
+        double x = getTa();
+        return -36.88*Math.log(x)+124.53/*+ RobotConstants.RobotDimensions.LIMELIGHT_DISTANCE_OFFSET-10.6*/;
     }
 
     /**
      * @return The distance between the the target and the the middle of the robot
      */
-    public double getDistance() {
-        return calculateVector().magnitude();
-    }
+//    public double getDistance() {
+//        return calculateVector().magnitude();
+//    }
 
     public double getAngle() {
         return Math.toDegrees(Math.atan(calculateVector().y / calculateVector().x));
@@ -143,7 +147,7 @@ public class Limelight {
      */
     public LedMode getLedMode() {
         int index = (int) ledMode.getDouble(0);
-        return LedMode.values()[index - 1];
+        return LedMode.values()[index];
     }
 
     /**
@@ -161,7 +165,7 @@ public class Limelight {
     }
 
     public enum Target {
-        target1(1, 0), target2(2, 0);
+        RocketMiddle(0, 91), target2(1, 0);
         private final int index;
         private final double height;
 
@@ -184,7 +188,7 @@ public class Limelight {
      */
     public Target getTarget() {
         int index = (int) pipeline.getDouble(0);
-        return Target.values()[index - 1];
+        return Target.values()[index];
     }
 
     /**
@@ -202,8 +206,8 @@ public class Limelight {
     }
 
     private Vector2d calculateVector() {
-        Vector2d MiddleToLimelight = new Vector2d(0, RobotConstants.RobotDimensions.DistanceFromMiddleToLimelight);
-        Vector2d limelightToTarget = new Vector2d(0, getLimelightDistance());
+        Vector2d MiddleToLimelight = new Vector2d(0, RobotConstants.RobotDimensions.DISTANCE_FROM_MIDDLE_TO_LIMELIGHT);
+        Vector2d limelightToTarget = new Vector2d(0, getDistance());
         limelightToTarget.rotate(-getTx());
         return new Vector2d(MiddleToLimelight.x + limelightToTarget.x, MiddleToLimelight.y + limelightToTarget.y);
     }
