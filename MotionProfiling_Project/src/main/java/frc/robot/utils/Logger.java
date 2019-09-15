@@ -16,7 +16,7 @@ public class Logger {
      * @param columns the columns name (ex. velocity, acceleration)
      */
     public Logger(String name, String... columns) {
-        this.path =  Filesystem.getOperatingDirectory()+"/logs/"+ getTimeStamp() + '-' + name;
+        this.path = Filesystem.getOperatingDirectory()+"/logs/"+ getTimeStamp() + '-' + name;
         data = new StringBuilder();
         log(columns);
     }

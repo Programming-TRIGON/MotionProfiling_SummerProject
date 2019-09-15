@@ -75,8 +75,9 @@ public class Limelight {
 //                Math.tan(Math.toRadians(RobotConstants.RobotDimensions.LIMELIGHT_ANGLE + getTy()));
 //    }
     public double getDistance() {
-        double x = getTa();
-        return -36.88 * Math.log(x) + 124.53/*+ RobotConstants.RobotDimensions.LIMELIGHT_DISTANCE_OFFSET-10.6*/;
+        double x = getHeight(); //getTa();
+        return -114.6 * Math.log(x) - 111.94;
+        //-36.88 * Math.log(x) + 124.53/*+ RobotConstants.RobotDimensions.LIMELIGHT_DISTANCE_OFFSET-10.6*/;
     }
 
     /**
