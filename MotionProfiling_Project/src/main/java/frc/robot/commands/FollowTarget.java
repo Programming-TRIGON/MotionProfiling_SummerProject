@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.PidSettings;
 import frc.robot.Robot;
 import frc.robot.RobotConstants;
-import frc.robot.VisionPIDSource;
+import frc.robot.VisionPIDSourceX;
 import frc.robot.utils.Limelight;
 import frc.robot.utils.Limelight.CamMode;
 import frc.robot.vision.Target;
@@ -17,7 +17,8 @@ public class FollowTarget extends Command {
     private Target target;
     private PIDController pidControllerY, pidControllerX;
     private PidSettings pidSettingsY, pidSettingsX;
-    private PIDOutput pidOutput;
+    private PIDOutput pidOutputX, pidOutputY;
+    private double xOutput, yOutput;
 
     /**
      * @param target       The target to follow.
@@ -40,25 +41,32 @@ public class FollowTarget extends Command {
 
     @Override
     protected void initialize() {
-        this.pidOutput = new PIDOutput() {
+        this.pidOutputX = new PIDOutput() {
 
             public void pidWrite(double x) {
-                Robot.drivetrain.arcadeDrive(x, 0);
+                xOutput = x;
+            }
+        };
+        this.pidOutputY = new PIDOutput() {
+
+            public void pidWrite(double y) {
+                yOutput = y;
             }
         };
         // setting PID X values
         this.pidControllerX = new PIDController(pidSettingsX.getKP(), pidSettingsX.getKI(), pidSettingsX.getKD(),
-                Robot.visionPIDSource, this.pidOutput);
+                Robot.visionPIDSourceX, this.pidOutputX);
         pidControllerX.setSetpoint(0);
         // pidControllerX.setInputRange(-27, 27);
         pidControllerX.setOutputRange(1, -1);
         pidControllerX.setAbsoluteTolerance(pidSettingsX.getTolerance());
         // setting PID Y values
-        pidControllerY = new PIDController(pidSettingsY.getKP(), pidSettingsY.getKI(), pidSettingsY.getKD());
+        this.pidControllerY = new PIDController(pidSettingsY.getKP(), pidSettingsY.getKI(), pidSettingsY.getKD(), 
+        Robot.visionPIDSourceY, this.pidOutputY);
         // pidControllerY.setSetpoint(target.getSetpoint());
         pidControllerY.setSetpoint(0);
         pidControllerY.setOutputRange(1, -1);
-        pidControllerY.setAbsoluteTolerance(pidSettingsY.getTolerance(), pidSettingsY.getDeltaTolerance());
+        pidControllerY.setAbsoluteTolerance(pidSettingsY.getTolerance());
         // setting limelight settings
         Robot.limelight.setPipeline(target.getIndex());
         Robot.limelight.setCamMode(CamMode.vision);
@@ -70,8 +78,7 @@ public class FollowTarget extends Command {
         if (Robot.limelight.getTv()) {
             // Robot.drivetrain.arcadeDrive(pidControllerX.calculate(Robot.limelight.getTx()),
             // pidControllerY.calculate(Robot.limelight.getDistance()));
-            Robot.drivetrain.arcadeDrive(Robot.limelight.getTx() * pidSettingsX.getKP(),
-                    Robot.limelight.getDistance() * pidSettingsY.getKP());
+            Robot.drivetrain.arcadeDrive(xOutput,yOutput);
             lastTimeOnTarget = Timer.getFPGATimestamp();
         } else {
             // the target hasn't been found.
@@ -83,7 +90,7 @@ public class FollowTarget extends Command {
     protected boolean isFinished() {
         // if it does not detect a target for enough time it will return true
         return Timer.getFPGATimestamp() - lastTimeOnTarget > pidSettingsX.getWaitTime()
-                || (pidControllerX.atSetpoint() && pidControllerY.atSetpoint());
+                || (pidControllerX.onTarget() && pidControllerY.onTarget());
     }
 
     @Override

@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 /**
  * Add your docs here.
  */
-public class VisionPIDSourceX implements PIDSource{
+public class VisionPIDSourceY implements PIDSource{
     
     @Override
     public PIDSourceType getPIDSourceType() {
@@ -22,7 +22,7 @@ public class VisionPIDSourceX implements PIDSource{
 
     @Override
     public double pidGet() {
-        return Robot.limelight.getDistance();
+        return Robot.limelight.getTx();
     }
 
     @Override

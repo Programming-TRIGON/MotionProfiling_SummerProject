@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
   public static PathCreater pathCreater;
   public static Limelight limelight;
   public static VisionPIDSourceX visionPIDSourceX;
+  public static VisionPIDSourceY visionPIDSourceY;
 
   @Override
   public void robotInit() {
@@ -48,6 +49,7 @@ public class Robot extends TimedRobot {
     Robot.limelight = new Limelight();
     Robot.drivetrain = new Drivetrain();
     Robot.visionPIDSourceX = new VisionPIDSourceX();
+    Robot.visionPIDSourceY = new VisionPIDSourceY();
 
     Robot.dbc = new DashBoardController();
 
