@@ -7,8 +7,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.PidSettings;
 import frc.robot.Robot;
 import frc.robot.RobotConstants;
-import frc.robot.VisionPIDSourceX;
-import frc.robot.utils.Limelight;
 import frc.robot.utils.Limelight.CamMode;
 import frc.robot.vision.Target;
 
@@ -58,18 +56,21 @@ public class FollowTarget extends Command {
                 Robot.visionPIDSourceX, this.pidOutputX);
         pidControllerX.setSetpoint(0);
         // pidControllerX.setInputRange(-27, 27);
-        pidControllerX.setOutputRange(1, -1);
+        pidControllerX.setOutputRange(-1, 1);
         pidControllerX.setAbsoluteTolerance(pidSettingsX.getTolerance());
         // setting PID Y values
+        
         this.pidControllerY = new PIDController(pidSettingsY.getKP(), pidSettingsY.getKI(), pidSettingsY.getKD(), 
         Robot.visionPIDSourceY, this.pidOutputY);
         // pidControllerY.setSetpoint(target.getSetpoint());
         pidControllerY.setSetpoint(0);
-        pidControllerY.setOutputRange(1, -1);
+        pidControllerY.setOutputRange(-1, 1);
         pidControllerY.setAbsoluteTolerance(pidSettingsY.getTolerance());
         // setting limelight settings
         Robot.limelight.setPipeline(target.getIndex());
         Robot.limelight.setCamMode(CamMode.vision);
+        pidControllerX.enable();
+        pidControllerY.enable();
     }
 
     @Override
@@ -83,6 +84,7 @@ public class FollowTarget extends Command {
         } else {
             // the target hasn't been found.
             Robot.drivetrain.arcadeDrive(0, 0);
+            
         }
     }
 
@@ -95,6 +97,10 @@ public class FollowTarget extends Command {
 
     @Override
     protected void end() {
+        pidControllerX.disable();
+        pidControllerX.close();
+        pidControllerY.disable();
+        pidControllerY.close();
         Robot.drivetrain.arcadeDrive(0, 0);
     }
 

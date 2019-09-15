@@ -22,7 +22,7 @@ public class VisionPIDSourceX implements PIDSource{
 
     @Override
     public double pidGet() {
-        return Robot.limelight.getDistance();
+        return -Robot.limelight.getDistance();
     }
 
     @Override

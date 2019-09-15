@@ -1,11 +1,5 @@
 package frc.robot;
 
-import java.io.File;
-import java.io.IOException;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
-
 /**
  * All the constants on the code are stored here.
  */
@@ -47,7 +41,7 @@ public class RobotConstants {
     public static class PID{
         public static final PidSettings VISION_TURN_PID_SETTINGS = new PidSettings(0.03,0.04,0.002,1,1,2);
         //TODO: those values are temporary.
-        public static final PidSettings FOLLOW_TARGET_X = new PidSettings(0,0,0,0,0,0);
-        public static final PidSettings FOLLOW_TARGET_Y = new PidSettings(0,0,0,0,0,0);
+        public static final PidSettings FOLLOW_TARGET_X = new PidSettings(0.008,0.00005,0.002,5,0,0.5);
+        public static final PidSettings FOLLOW_TARGET_Y = new PidSettings(0,0,0,5,0,0.5);
     }
 }

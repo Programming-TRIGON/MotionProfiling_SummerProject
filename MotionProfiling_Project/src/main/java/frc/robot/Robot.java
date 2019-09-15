@@ -12,12 +12,10 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.CalibrateKa;
-import frc.robot.commands.CalibrateKv;
-import frc.robot.commands.CalibrateMaxSpeed;
 import frc.robot.commands.*;
 import frc.robot.utils.Limelight;
 import frc.robot.utils.Limelight.LedMode;
+import frc.robot.vision.Target;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -92,6 +90,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("not blink",notBlink);
     SmartDashboard.putData("find distance", findDistance);
     SmartDashboard.putData("Test PID command",new TestPID());
+    SmartDashboard.putData("Vision tracking", new FollowTarget(Target.RocketMiddle));
 
     Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
         new Waypoint(2, -3, 0) // Waypoint @ x=-2, y=-2, exit angle=0 radians
