@@ -44,6 +44,8 @@ public class TestPID extends Command {
 
   @Override
   protected void end() {
+    testCommand.cancel();
+    testCommand.close();
   }
 
   public void updatePID(){
@@ -55,8 +57,7 @@ public class TestPID extends Command {
   @Override
   protected void interrupted() {
     end();
-    testCommand.cancel();
-    testCommand.close();
+
   }
 }
 

@@ -46,7 +46,7 @@ public class Drivetrain extends Subsystem {
   }
 
   public void arcadeDrive(double x, double y) {
-    this.driveTrain.arcadeDrive(x, y);
+    this.driveTrain.arcadeDrive(y, x);
   }
 
   public double getAngle() {
