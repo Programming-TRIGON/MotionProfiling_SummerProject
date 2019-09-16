@@ -64,7 +64,7 @@ public class FollowTarget extends Command {
     protected void execute() {
         // if it sees a target it will do PID on the x axis else it won't move
         if (Robot.limelight.getTv()) {
-            Robot.drivetrain.arcadeDrive(xOutput,yOutput);
+            Robot.drivetrain.cheesyDrive(xOutput,yOutput,yOutput>30);
             lastTimeOnTarget = Timer.getFPGATimestamp();
         } else {
             // the target hasn't been found.
