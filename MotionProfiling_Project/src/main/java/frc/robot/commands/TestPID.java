@@ -13,11 +13,11 @@ public class TestPID extends Command {
   private Supplier<Double> KD = ConstantHandler.addConstantDouble("KD", 0);
   private Supplier<Double> TOLERANCE = ConstantHandler.addConstantDouble("tolerance", 1);
   private Supplier<Double> DELTA_TOLERANCE = ConstantHandler.addConstantDouble("delta tolerance", 1);
-  private Supplier<Double> KP2 = ConstantHandler.addConstantDouble("KP2", 0.01);
-  private Supplier<Double> KI2 = ConstantHandler.addConstantDouble("KI2", 0);
-  private Supplier<Double> KD2 = ConstantHandler.addConstantDouble("KD2", 0);
-  private Supplier<Double> TOLERANCE2 = ConstantHandler.addConstantDouble("tolerance2", 1);
-  private Supplier<Double> DELTA_TOLERANCE2 = ConstantHandler.addConstantDouble("delta tolerance2", 1);
+  private Supplier<Double> KP_ROTATION = ConstantHandler.addConstantDouble("KP_ROTATION", 0.01);
+  private Supplier<Double> KI_ROTATION = ConstantHandler.addConstantDouble("KI_ROTATION", 0);
+  private Supplier<Double> KD_ROTATION = ConstantHandler.addConstantDouble("KD_ROTATION", 0);
+  private Supplier<Double> TOLERANCE_ROTATION = ConstantHandler.addConstantDouble("tolerance_ROTATION", 1);
+  private Supplier<Double> DELTA_TOLERANCE_ROTATION = ConstantHandler.addConstantDouble("delta tolerance_ROTATION", 1);
 
   private PidSettings pidSettings;
   private PidSettings pidSettings2;
@@ -50,7 +50,7 @@ public class TestPID extends Command {
 
   public void updatePID(){
     this.pidSettings = new PidSettings(KP.get(), KI.get(), KD.get(), TOLERANCE.get(), DELTA_TOLERANCE.get());
-    this.pidSettings2 = new PidSettings(KP2.get(), KI2.get(), KD2.get(), TOLERANCE2.get(), DELTA_TOLERANCE2.get(),2);
+    this.pidSettings2 = new PidSettings(KP_ROTATION.get(), KI_ROTATION.get(), KD_ROTATION.get(), TOLERANCE_ROTATION.get(), DELTA_TOLERANCE_ROTATION.get(),2);
     SmartDashboard.putString("PID setting", "" + KP.get() + KI.get() + KD.get() + TOLERANCE.get() + DELTA_TOLERANCE.get());
   }
 

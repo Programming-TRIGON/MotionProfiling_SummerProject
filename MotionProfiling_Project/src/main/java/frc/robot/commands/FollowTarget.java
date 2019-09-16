@@ -41,14 +41,14 @@ public class FollowTarget extends Command {
         PIDSource visionPIDSourceX = new VisionPIDSourceX();
         PIDSource visionPIDSourceY = new VisionPIDSourceY();
         this.pidControllerX = new PIDController(pidSettingsX.getKP(), pidSettingsX.getKI(), pidSettingsX.getKD(),
-                visionPIDSourceX, x -> xOutput = x);
+                visionPIDSourceX, x -> xOutput = -x);
         pidControllerX.setSetpoint(0);
         pidControllerX.setOutputRange(-1, 1);
         pidControllerX.setAbsoluteTolerance(pidSettingsX.getTolerance());
 
         // setting PID Y values
         this.pidControllerY = new PIDController(pidSettingsY.getKP(), pidSettingsY.getKI(), pidSettingsY.getKD(), 
-        visionPIDSourceY, y -> yOutput = y);
+        visionPIDSourceY, y -> yOutput = -y);
         pidControllerY.setSetpoint(0);
         pidControllerY.setOutputRange(-1, 1);
         pidControllerY.setAbsoluteTolerance(pidSettingsY.getTolerance());
