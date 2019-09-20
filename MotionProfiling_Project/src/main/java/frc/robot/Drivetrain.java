@@ -49,6 +49,10 @@ public class Drivetrain extends Subsystem {
     this.driveTrain.arcadeDrive(y, x);
   }
 
+  public void cheesyDrive(double x, double y, boolean isQuickTurn){
+    this.driveTrain.curvatureDrive(y, x, isQuickTurn);
+  }
+  
   public double getAngle() {
     return this.gyro.getAngle();
   }

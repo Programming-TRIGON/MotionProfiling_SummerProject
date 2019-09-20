@@ -21,9 +21,9 @@ public class OI {
         driveTest = new JoystickButton(driver, 2);
         //driveTest.whileHeld(new DriveArcade(() -> 0.0, () -> 1.0));
         vision = new JoystickButton(driver,3);
-        Command visionMode = new InstantCommand(()->Robot.limelight.setCamMode(Robot.limelight.CamMode.vision));
-        visionMode.setRunWhenDisabled(true);
-        vision.whenPressed(visionMode);
+        //Command visionMode = new InstantCommand(()->Robot.limelight.setCamMode(Robot.limelight.CamMode.vision));
+        //visionMode.setRunWhenDisabled(true);
+        //vision.whenPressed(visionMode);
 
         //CameraServer.getInstance().startAutomaticCapture(0);
         MaxSpeedStop = new JoystickButton(driver, 3);
