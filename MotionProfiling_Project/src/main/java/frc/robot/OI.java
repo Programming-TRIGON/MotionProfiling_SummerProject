@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.commands.DriveArcade;
-import frc.robot.utils.Limelight;
 import frc.robot.utils.Logger;
 
 public class OI {
@@ -22,7 +21,7 @@ public class OI {
         driveTest = new JoystickButton(driver, 2);
         //driveTest.whileHeld(new DriveArcade(() -> 0.0, () -> 1.0));
         vision = new JoystickButton(driver,3);
-        Command visionMode = new InstantCommand(()->Robot.limelight.setCamMode(Limelight.CamMode.vision));
+        Command visionMode = new InstantCommand(()->Robot.limelight.setCamMode(Robot.limelight.CamMode.vision));
         visionMode.setRunWhenDisabled(true);
         vision.whenPressed(visionMode);
 

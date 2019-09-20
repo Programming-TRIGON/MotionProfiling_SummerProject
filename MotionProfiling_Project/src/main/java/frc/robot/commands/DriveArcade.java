@@ -7,8 +7,9 @@ import frc.robot.Robot;
 
 public class DriveArcade extends Command {
   private Supplier<Double> x;
-private Supplier<Double> y; 
-  public DriveArcade(Supplier<Double> x,Supplier<Double> y) {
+  private Supplier<Double> y;
+
+  public DriveArcade(Supplier<Double> x, Supplier<Double> y) {
     requires(Robot.drivetrain);
     this.x = x;
     this.y = y;
