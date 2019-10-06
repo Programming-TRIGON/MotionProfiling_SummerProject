@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -15,21 +16,22 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class Drivetrain extends Subsystem {
 
   private SpeedControllerGroup leftGroup, rightGroup;
-  private WPI_TalonSRX talon;
+  private WPI_TalonSRX talon, talon2;
   private DifferentialDrive driveTrain;
   private ADXRS450_Gyro gyro;
   private Encoder leftEncoder, rightEncoder;
-  private double prevTime = 0, leftAcceleration = 0, rightAcceleration = 0,
-   prevLeftVelocity = 0, prevRightVelocity = 0;
-  
-  public Drivetrain(){
+  private double prevTime = 0, leftAcceleration = 0, rightAcceleration = 0, prevLeftVelocity = 0, prevRightVelocity = 0;
+
+  public Drivetrain() {
     super();
-    this.rightGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_RIGHT_MOTOR),
-        new WPI_TalonSRX(RobotMap.CAN.FRONT_RIGHT_MOTOR));
-      talon  = new WPI_TalonSRX(RobotMap.CAN.FRONT_LEFT_MOTOR);
+    talon = new WPI_TalonSRX(RobotMap.CAN.FRONT_RIGHT_MOTOR);
+    talon2 = new WPI_TalonSRX(RobotMap.CAN.REAR_RIGHT_MOTOR);
+    talon.set(ControlMode.Follower,talon2.getDeviceID());
+    //this.rightGroup = new SpeedControllerGroup(talon2, talon);
+
     this.leftGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_LEFT_MOTOR),
-        talon);
-    this.driveTrain = new DifferentialDrive(this.leftGroup, this.rightGroup);
+        new WPI_TalonSRX(RobotMap.CAN.FRONT_LEFT_MOTOR));
+    this.driveTrain = new DifferentialDrive(this.leftGroup, talon2);
     // this.gyro = new ADXRS450_Gyro();
     this.gyro = new ADXRS450_Gyro();
     this.leftEncoder = new Encoder(RobotMap.DIO.DRIVE_TRAIN_LEFT_ENCODER_CHANNEL_A,
@@ -42,7 +44,6 @@ public class Drivetrain extends Subsystem {
 
     this.leftEncoder.setReverseDirection(true);
     this.rightEncoder.setReverseDirection(false);
-
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -104,19 +105,19 @@ public class Drivetrain extends Subsystem {
     this.gyro.calibrate();
   }
 
-  public int getLeftTicks(){
+  public int getLeftTicks() {
     return this.leftEncoder.get();
   }
-  public WPI_TalonSRX getTalon(){
-    return talon;
-  }
 
+  public WPI_TalonSRX getTalon() {
+    return talon2;
+  }
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new DriveArcade(Robot.oi::getJoystickX, Robot.oi::getJoystickY));
   }
 
-  /** we calculate the acceleration of the robot as well as its velocity*/
+  /** we calculate the acceleration of the robot as well as its velocity */
   @Override
   public void periodic() {
     double currentTime = Timer.getFPGATimestamp();
@@ -130,4 +131,3 @@ public class Drivetrain extends Subsystem {
     this.prevTime = currentTime;
   }
 }
-

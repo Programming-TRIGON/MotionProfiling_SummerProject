@@ -1,7 +1,8 @@
 package frc.robot;
 
-
 import java.util.function.Supplier;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.spikes2212.dashboard.ConstantHandler;
 import com.spikes2212.dashboard.DashBoardController;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -13,6 +14,7 @@ import frc.robot.commands.CalibrateCurrent;
 import frc.robot.commands.CalibrateKa;
 import frc.robot.commands.CalibrateKv;
 import frc.robot.commands.CalibrateMaxSpeed;
+import frc.robot.commands.TestCurrent;
 import frc.robot.motionprofile.FollowPath;
 import frc.robot.motionprofile.Path;
 import frc.robot.motionprofile.PathCreater;
@@ -27,7 +29,7 @@ public class Robot extends TimedRobot {
   public static DashBoardController dbc;
   public static Drivetrain drivetrain;
   public static OI oi;
-  public static PathCreater pathCreater;
+  // public static PathCreater pathCreater;
 
   @Override
   public void robotInit() {
@@ -36,7 +38,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     Robot.drivetrain = new Drivetrain();
-
     Robot.dbc = new DashBoardController();
 
     dbc.addNumber("Left encoder", Robot.drivetrain::getLeftDistance);
@@ -49,12 +50,12 @@ public class Robot extends TimedRobot {
     dbc.addNumber("left acceleration", Robot.drivetrain::getLeftAcceleration);
     dbc.addNumber("left ticks", Robot.drivetrain::getLeftTicks);
     dbc.addNumber("right ticks", Robot.drivetrain::getRightTicks);
-
-    SmartDashboard.putData("test path", new FollowPath(Path.SCALE));
-    SmartDashboard.putData("test jaci", new FollowPath(Path.TEST_JACI));
-    SmartDashboard.putData("test csv reader", new FollowPath(Path.TEST));
+    dbc.addNumber("talon current", drivetrain.getTalon()::getOutputCurrent);
+    // SmartDashboard.putData("test path", new FollowPath(Path.SCALE));
+    // SmartDashboard.putData("test jaci", new FollowPath(Path.TEST_JACI));
+    // SmartDashboard.putData("test csv reader", new FollowPath(Path.TEST));
     SmartDashboard.putData("Max speed Kv forward", new CalibrateMaxSpeed(false));
-    SmartDashboard.putData("Max speed Kv Reversed", new CalibrateMaxSpeed(true));  
+    SmartDashboard.putData("Max speed Kv Reversed", new CalibrateMaxSpeed(true));
     SmartDashboard.putData("test ka",
         new CalibrateKa(RobotConstants.Calibration.leftForwardKv, RobotConstants.Calibration.rightForwardKv,
             RobotConstants.Calibration.leftForwardVi, RobotConstants.Calibration.rightForwardVi, false));
@@ -64,8 +65,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("reset", reset);
     SmartDashboard.putData("test kv", new CalibrateKv(false, voltageSupplier));
     SmartDashboard.putData("calibrate current", new CalibrateCurrent(drivetrain, drivetrain.getTalon()));
-    
-    Robot.pathCreater = new PathCreater();
+    SmartDashboard.putData("test current", new TestCurrent(drivetrain.getTalon()));
+    // Robot.pathCreater = new PathCreater();
     Robot.oi = new OI();
   }
 
