@@ -16,6 +16,8 @@ public class Logger {
      * @param columns the columns name (ex. velocity, acceleration)
      */
     public Logger(String name, String... columns) {
+        if(!name.endsWith(".csv"))
+            name = name+".csv";
         this.path =  Filesystem.getOperatingDirectory()+"/logs/"+ getTimeStamp() + '-' + name;
         data = new StringBuilder();
         log(columns);

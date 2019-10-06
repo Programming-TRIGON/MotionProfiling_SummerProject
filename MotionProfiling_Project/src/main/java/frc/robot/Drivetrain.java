@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class Drivetrain extends Subsystem {
 
   private SpeedControllerGroup leftGroup, rightGroup;
+  private WPI_TalonSRX talon;
   private DifferentialDrive driveTrain;
   private ADXRS450_Gyro gyro;
   private Encoder leftEncoder, rightEncoder;
@@ -25,8 +26,9 @@ public class Drivetrain extends Subsystem {
     super();
     this.rightGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_RIGHT_MOTOR),
         new WPI_TalonSRX(RobotMap.CAN.FRONT_RIGHT_MOTOR));
+      talon  = new WPI_TalonSRX(RobotMap.CAN.FRONT_LEFT_MOTOR);
     this.leftGroup = new SpeedControllerGroup(new WPI_TalonSRX(RobotMap.CAN.REAR_LEFT_MOTOR),
-        new WPI_TalonSRX(RobotMap.CAN.FRONT_LEFT_MOTOR));
+        talon);
     this.driveTrain = new DifferentialDrive(this.leftGroup, this.rightGroup);
     // this.gyro = new ADXRS450_Gyro();
     this.gyro = new ADXRS450_Gyro();
@@ -104,6 +106,9 @@ public class Drivetrain extends Subsystem {
 
   public int getLeftTicks(){
     return this.leftEncoder.get();
+  }
+  public WPI_TalonSRX getTalon(){
+    return talon;
   }
 
   @Override

@@ -10,7 +10,7 @@ import frc.robot.utils.Logger;
 public class CalibrateCurrent extends Command {
   WPI_TalonSRX talon;
   Logger logger;
-  double startTime = 0, sum, currentPower = 0.2;
+  double startTime = 0, maxCurrent, runNumber, currentPower = 0.2;
   final double DELTA_TIME = 1000, MAX_POWER = 0.5, DELTA_POWER = 0.05;
 
   public CalibrateCurrent(Subsystem subsystem, WPI_TalonSRX talonSRX) {
@@ -21,7 +21,7 @@ public class CalibrateCurrent extends Command {
   // Initializes the logger and starts to measure time.
   @Override
   protected void initialize() {
-    logger = new Logger("current calibration", "power", "ampers");
+    logger = new Logger("current calibration.csv", "power", "ampers");
     startTime = Timer.getFPGATimestamp();
   }
 
@@ -29,17 +29,20 @@ public class CalibrateCurrent extends Command {
   @Override
   protected void execute() {
     talon.set(currentPower);
-    sum += talon.getOutputCurrent();
     if (Timer.getFPGATimestamp() - startTime > DELTA_TIME) {
+      //starts measuring the current.
+      maxCurrent = Math.max(maxCurrent, talon.getOutputCurrent());
+      if(Timer.getFPGATimestamp() - startTime > 2*DELTA_TIME){
       /*
-       * More than a second have passed. Logs the current power and the sum of the
+       * More than two seconds have passed. Logs the current power and the sum of the
        * current.
        */
-      logger.log(currentPower, sum);
-      // increases the power and resets other variables.
-      currentPower += DELTA_POWER;
-      sum = 0;
-      startTime = Timer.getFPGATimestamp();
+        logger.log(currentPower, maxCurrent/runNumber);
+        // increases the power and resets other variables.
+        currentPower += DELTA_POWER;
+        maxCurrent = 0;
+        startTime = Timer.getFPGATimestamp();
+      }
     }
   }
 

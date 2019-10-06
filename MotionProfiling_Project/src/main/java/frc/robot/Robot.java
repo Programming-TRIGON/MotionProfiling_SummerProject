@@ -1,6 +1,6 @@
 package frc.robot;
 
-import java.io.File;
+
 import java.util.function.Supplier;
 import com.spikes2212.dashboard.ConstantHandler;
 import com.spikes2212.dashboard.DashBoardController;
@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.CalibrateCurrent;
 import frc.robot.commands.CalibrateKa;
 import frc.robot.commands.CalibrateKv;
 import frc.robot.commands.CalibrateMaxSpeed;
@@ -62,6 +63,7 @@ public class Robot extends TimedRobot {
     reset.setRunWhenDisabled(true);
     SmartDashboard.putData("reset", reset);
     SmartDashboard.putData("test kv", new CalibrateKv(false, voltageSupplier));
+    SmartDashboard.putData("calibrate current", new CalibrateCurrent(drivetrain, drivetrain.getTalon()));
     
     Robot.pathCreater = new PathCreater();
     Robot.oi = new OI();
